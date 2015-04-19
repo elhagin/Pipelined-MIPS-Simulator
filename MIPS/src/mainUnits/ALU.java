@@ -2,6 +2,7 @@ package mainUnits;
 
 public class ALU
 {
+	
 	public int generateControl(int aluOpControlSignal, int funct)
 	{
 		int aluControl = 8;
