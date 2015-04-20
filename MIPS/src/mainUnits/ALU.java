@@ -1,5 +1,7 @@
 package mainUnits;
 
+import memory.Simulator;
+
 public class ALU
 {
 	private int input1;
@@ -10,10 +12,10 @@ public class ALU
 		input1 = previousReg.getData1(); //to be adjusted after registers are implemented
 		input2 = previousReg.getData2();
 	}
-	public String generateControl(int aluOpControlSignal, int funct)
+	public String generateControl(int funct)
 	{
 		String aluControl = "1000";
-		
+		int aluOpControlSignal = Simulator.getControlUnit().getALUOp();
 		switch (aluOpControlSignal)
 		{
 			case 0:	aluControl = "0010";
