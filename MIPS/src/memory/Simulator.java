@@ -6,6 +6,7 @@ public class Simulator {
 private static InstructionFetch If ;
 private static InstructionDecode ID ;
 private static ArrayList <String> Memory;
+private static CU controlUnit;
 public static InstructionFetch getIf() {
 	return If;
 }
@@ -28,5 +29,13 @@ public static ArrayList<String> getMemory() {
 
 public void setMemory(ArrayList<String> memory) {
 	Memory = memory;
+}
+
+public static CU getControlUnit() {
+	return controlUnit;
+}
+
+public static void setControlUnit(CU controlUnit) {
+	Simulator.controlUnit = controlUnit;
 }
 }

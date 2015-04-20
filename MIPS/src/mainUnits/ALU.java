@@ -10,27 +10,27 @@ public class ALU
 		input1 = previousReg.getData1(); //to be adjusted after registers are implemented
 		input2 = previousReg.getData2();
 	}
-	public int generateControl(int aluOpControlSignal, int funct)
+	public String generateControl(int aluOpControlSignal, int funct)
 	{
-		int aluControl = 8;
+		String aluControl = "1000";
 		
 		switch (aluOpControlSignal)
 		{
-			case 0:	aluControl = 2;
+			case 0:	aluControl = "0010";
 					break;
-			case 1:	aluControl = 6;
+			case 1:	aluControl = "0110";
 					break;
 			case 2: switch (funct)
 					{
-						case 32: aluControl = 2;
+						case 32: aluControl = "0010";
 								 break;
-						case 34: aluControl = 6;
+						case 34: aluControl = "0110";
 								 break;
-						case 36: aluControl = 0;
+						case 36: aluControl = "0000";
 								 break;
-						case 37: aluControl = 1;
+						case 37: aluControl = "0001";
 								 break;
-						case 42: aluControl = 7;
+						case 42: aluControl = "0111";
 								 break;
 					}
 					break;			
