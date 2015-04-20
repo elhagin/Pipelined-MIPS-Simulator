@@ -4,6 +4,7 @@ public class ALU
 {
 	private int input1;
 	private int input2;
+	
 	public ALU(Register previousReg, Register nextReg)
 	{
 		input1 = previousReg.getData1(); //to be adjusted after registers are implemented
