@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class datamemory {
 	private CU cu = new CU();
 	private String OutputReadData;
-	ArrayList x = new ArrayList (); 
      public datamemory(){
     	 OutputReadData = "";
      }
@@ -20,5 +19,11 @@ public class datamemory {
     		    this.OutputReadData = ReadDataFromMemory(InputAddress);
     	 }
      }
+	public String getOutputReadData() {
+		return OutputReadData;
+	}
+	public void setOutputReadData(String outputReadData) {
+		OutputReadData = outputReadData;
+	}
      
 }

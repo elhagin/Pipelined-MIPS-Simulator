@@ -1,9 +1,9 @@
 package memory;
 
 public class Simulator {
-private InstructionFetch If ;
+private static InstructionFetch If ;
 
-public InstructionFetch getIf() {
+public static InstructionFetch getIf() {
 	return If;
 }
 
