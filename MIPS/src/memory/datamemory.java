@@ -1,7 +1,5 @@
 package memory;
 
-import java.util.ArrayList;
-
 public class datamemory {
 	private CU cu = new CU();
 	private String OutputReadData;
