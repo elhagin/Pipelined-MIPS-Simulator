@@ -8,3 +8,4 @@ public class InstructionFetch {
 			return Simulator.getMemory.get(Simulator.getPC()-4);
 	}
 }
+ 	 	
