@@ -1,6 +1,10 @@
-package memory;
+package mainUnits;
 
 import java.util.ArrayList;
+
+import memory.CU;
+import memory.InstructionDecode;
+import memory.InstructionFetch;
 
 public class Simulator {
 private static InstructionFetch If ;
