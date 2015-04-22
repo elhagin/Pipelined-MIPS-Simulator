@@ -1,6 +1,5 @@
 package mainUnits;
-
-import memory.Simulator;
+import Simulator;
 
 public class ALU
 {

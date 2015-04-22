@@ -1394,6 +1394,43 @@ public class Reader {
 		
 	}
 	
+	public Reader(){
+		
+	}
+	
+	public String encodeCode(String h){
+		outputBinary = "";
+		FunctionCode = "";
+		ShiftAmount = "";
+		x = h;
+		split= x.split("\\s+",2);
+		s = split[1].toString().replaceAll("\\s+", "");
+		split2 = s.split(",");
+		switch(split[0]){
+			case "add":checkAdd();break;
+			case "sub":checkSub();break;
+			case "and":checkAnd();break;
+			case "sll":checkSll();break;
+			case "srl":checkSrl();break;
+			case "nor":checkNor();break;
+			case "jr":checkJr();break;
+			case "slt":checkSlt();break;
+			case "sltu":checkSltu();break;
+			case "addi":checkAddi();break;
+			case "lb":checkLb();break;
+			case "lw":checkLw();break;
+			case "lbu":checkLbu();break;
+			case "sw":checkSw();break;
+			case "sb":checkSb();break;
+			case "lui":checkLui();break;
+			case "j":checkJ();break;
+			case "beq":checkBeq();break;
+			case "bne":checkBne();break;
+			case "jal":checkJal();break;
+		}
+		return outputBinary;
+	}
+	
 
 }
 
