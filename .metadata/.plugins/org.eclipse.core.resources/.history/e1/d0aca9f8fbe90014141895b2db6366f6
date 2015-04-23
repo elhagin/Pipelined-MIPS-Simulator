@@ -6,12 +6,6 @@ public class IDEXReg
 	private int branch;
 	private int aluOp;
 	private int aluSrc;
-	private int PC;
-	private int regData1;
-	private int regData2;
-	private String last16Bits;
-	private String 
-	
 	public int getMemToReg() {
 		return memToReg;
 	}

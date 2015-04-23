@@ -2585,3 +2585,15 @@ org.eclipse.recommenders.utils.Logs$LogTraceException
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:603)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1465)
 	at org.eclipse.equinox.launcher.Main.main(Main.java:1438)
+
+!ENTRY org.eclipse.egit.ui 4 0 2015-04-23 22:34:19.244
+!MESSAGE The process cannot access the file because another process has locked a portion of the file
+!STACK 0
+java.io.IOException: The process cannot access the file because another process has locked a portion of the file
+	at java.io.FileInputStream.read(Native Method)
+	at org.eclipse.jgit.util.IO.readWholeStream(IO.java:215)
+	at org.eclipse.jgit.treewalk.WorkingTreeIterator.possiblyFilteredInputStream(WorkingTreeIterator.java:380)
+	at org.eclipse.jgit.treewalk.WorkingTreeIterator.getEntryContentLength(WorkingTreeIterator.java:536)
+	at org.eclipse.jgit.api.AddCommand.call(AddCommand.java:184)
+	at org.eclipse.egit.ui.internal.staging.StagingView$42.run(StagingView.java:2078)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)

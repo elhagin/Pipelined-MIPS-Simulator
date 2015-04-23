@@ -1,0 +1,10 @@
+package pipelineRegisters;
+
+public class IDEXReg
+{
+	private int memToReg;
+	private int branch;
+	private int aluOp;
+	private int aluSrc;
+	
+}

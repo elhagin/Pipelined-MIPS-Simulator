@@ -12,11 +12,8 @@ public class InstructionFetch {
 		{
 			return "program_done";
 		}
-		String currentInstruction = Simulator.getInstructionMemory().get(Simulator.getPC());
 		Simulator.setPC(Simulator.getPC()+1);
-		Simulator.getiFID().setInstruction(currentInstruction);
-		Simulator.getiFID().setPC(Simulator.getPC());
-		return currentInstruction;
+		return Simulator.getInstructionMemory().get(Simulator.getPC()-1);
 	}
 }
  	 	

@@ -9,10 +9,8 @@ import java.util.HashMap;
 import memory.CU;
 import memory.InstructionDecode;
 import memory.InstructionFetch;
-import pipelineRegisters.EXMemReg;
 import pipelineRegisters.IDEXReg;
 import pipelineRegisters.IFIDReg;
-import pipelineRegisters.MemWBReg;
 
 public class Simulator {
 	private static int PC;
@@ -137,37 +135,5 @@ public class Simulator {
 
 	public static void setDeclarations(HashMap<String, Integer> declarations) {
 		Simulator.declarations = declarations;
-	}
-
-	public static IDEXReg getiDEX() {
-		return iDEX;
-	}
-
-	public static void setiDEX(IDEXReg iDEX) {
-		Simulator.iDEX = iDEX;
-	}
-
-	public static IFIDReg getiFID() {
-		return iFID;
-	}
-
-	public static void setiFID(IFIDReg iFID) {
-		Simulator.iFID = iFID;
-	}
-
-	public static EXMemReg geteXMem() {
-		return eXMem;
-	}
-
-	public static void seteXMem(EXMemReg eXMem) {
-		Simulator.eXMem = eXMem;
-	}
-
-	public static MemWBReg getMemWB() {
-		return memWB;
-	}
-
-	public static void setMemWB(MemWBReg memWB) {
-		Simulator.memWB = memWB;
 	}
 }

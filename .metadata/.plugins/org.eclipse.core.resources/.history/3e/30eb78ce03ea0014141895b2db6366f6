@@ -12,9 +12,9 @@ public class InstructionDecode {
 	}
 	public  void action(){
 		String Instruction = Simulator.getInstructionMemory().get(Simulator.getPC()-1).toString();
-		setInstructionCU(Instruction.substring(0, 6));
-		setInstructionReadRegister1(Instruction.substring(6, 11));
-		setInstructionReadRegister2(Instruction.substring(11, 16));
+		setInstructionCU(Instruction.substring(0, 5));
+		setInstructionReadRegister1(Instruction.substring(6, 10));
+		setInstructionReadRegister2(Instruction.substring(11, 15));
 		setInstructionWriteRegisterBeforeMux(Instruction.substring(16, 20));
 		setInstructionSignExtend(Instruction.substring(16, 31));
 	}

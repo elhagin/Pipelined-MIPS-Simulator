@@ -4,6 +4,11 @@ public class IFIDReg {
 	private String instruction;
 	private int PC;
 
+	public IFIDReg() {
+		super();
+
+	}
+
 	public String getInstruction() {
 		return instruction;
 	}

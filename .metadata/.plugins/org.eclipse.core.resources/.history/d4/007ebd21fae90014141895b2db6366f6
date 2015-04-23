@@ -9,10 +9,6 @@ import java.util.HashMap;
 import memory.CU;
 import memory.InstructionDecode;
 import memory.InstructionFetch;
-import pipelineRegisters.EXMemReg;
-import pipelineRegisters.IDEXReg;
-import pipelineRegisters.IFIDReg;
-import pipelineRegisters.MemWBReg;
 
 public class Simulator {
 	private static int PC;
@@ -20,14 +16,10 @@ public class Simulator {
 	private static InstructionDecode decodeUnit ;
 	private static ArrayList <String> dataMemory;
 	private static ArrayList<String> instructionMemory;
-	private static CU controlUnit;
+	private CU controlUnit;
 	private static Reader r;
 	private static HashMap<String, Integer> labels;
 	private static HashMap<String, Integer> declarations;
-	private static IDEXReg iDEX;
-	private static IFIDReg iFID;
-	private static EXMemReg eXMem;
-	private static MemWBReg memWB;
 	
 	public static int getPC() {
 		return PC;
@@ -115,12 +107,12 @@ public class Simulator {
 		Simulator.instructionMemory = instructionMemory;
 	}
 
-	public static CU getControlUnit() {
+	public CU getControlUnit() {
 		return controlUnit;
 	}
 
-	public static void setControlUnit(CU controlUnit) {
-		Simulator.controlUnit = controlUnit;
+	public void setControlUnit(CU controlUnit) {
+		this.controlUnit = controlUnit;
 	}
 
 	public static HashMap<String, Integer> getLabels() {
@@ -137,37 +129,5 @@ public class Simulator {
 
 	public static void setDeclarations(HashMap<String, Integer> declarations) {
 		Simulator.declarations = declarations;
-	}
-
-	public static IDEXReg getiDEX() {
-		return iDEX;
-	}
-
-	public static void setiDEX(IDEXReg iDEX) {
-		Simulator.iDEX = iDEX;
-	}
-
-	public static IFIDReg getiFID() {
-		return iFID;
-	}
-
-	public static void setiFID(IFIDReg iFID) {
-		Simulator.iFID = iFID;
-	}
-
-	public static EXMemReg geteXMem() {
-		return eXMem;
-	}
-
-	public static void seteXMem(EXMemReg eXMem) {
-		Simulator.eXMem = eXMem;
-	}
-
-	public static MemWBReg getMemWB() {
-		return memWB;
-	}
-
-	public static void setMemWB(MemWBReg memWB) {
-		Simulator.memWB = memWB;
 	}
 }
