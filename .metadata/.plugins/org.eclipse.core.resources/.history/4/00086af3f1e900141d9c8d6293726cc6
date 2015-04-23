@@ -33,7 +33,7 @@ public class Reader {
 			}
 			switch(split[0])
 			{
-				case ".data":readingData = true; return "nodata"; 
+				case ".data":readingData = true;break; 
 				case "add":checkAdd();break;
 				case "sub":checkSub();break;
 				case "and":checkAnd();break;
@@ -55,7 +55,6 @@ public class Reader {
 				case "bne":checkBne();break;
 				case "jal":checkJal();break;
 			}
-			return outputBinary;
 		}
 		else
 		{
@@ -63,39 +62,41 @@ public class Reader {
 			if (split.length == 1 && split[0].equals(".text"))
 			{
 				readingData = false;
-				return "nodata";
 			}
-			s = split[1].replaceAll("^\\s+", "");
-			String[] directive = s.split("\\s+", 2);
-			switch(directive[0])
+			else
 			{
-			case ".word":
-				String[] words = directive[1].replaceAll("\\s+", "").split(",");
-				String numberInBinary = Integer.toBinaryString(Integer.parseInt(words[0]));
-				while (numberInBinary.length() < 32)
-					numberInBinary = "0" + numberInBinary;
-				String directiveLabel = split[0];
-				Simulator.getDataMemory().add(numberInBinary);
-				int memoryAddress = Simulator.getDataMemory().lastIndexOf(numberInBinary);
-				Simulator.getDeclarations().put(directiveLabel, memoryAddress);
-				for (int i = 1; i < words.length; i++)
+				s = split[1].replaceAll("^\\s+", "");
+				String[] directive = s.split("\\s+", 2);
+				switch(directive[0])
 				{
-					numberInBinary = Integer.toBinaryString(Integer.parseInt(words[i]));
-					while (numberInBinary.length() < 32)
-						numberInBinary = "0" + numberInBinary;
-					Simulator.getDataMemory().add(numberInBinary);
+					case ".word":
+						String[] words = directive[1].replaceAll("\\s+", "").split(",");
+						String numberInBinary = Integer.toBinaryString(Integer.parseInt(words[0]));
+						while (numberInBinary.length() < 32)
+							numberInBinary = "0" + numberInBinary;
+						String directiveLabel = split[0];
+						Simulator.getDataMemory().add(numberInBinary);
+						int memoryAddress = Simulator.getDataMemory().lastIndexOf(numberInBinary);
+						Simulator.getDeclarations().put(directiveLabel, memoryAddress);
+						for (int i = 1; i < words.length; i++)
+						{
+							numberInBinary = Integer.toBinaryString(Integer.parseInt(words[i]));
+							while (numberInBinary.length() < 32)
+								numberInBinary = "0" + numberInBinary;
+							Simulator.getDataMemory().add(numberInBinary);
+						}
+					break;
+					case ".space":
+						double space = (double) Integer.parseInt(directive[1].replaceAll("\\s+",  ""));
+						for (double numberOfWords = Math.ceil(space/32); numberOfWords > 0; numberOfWords--)
+						{
+							Simulator.getDataMemory().add("00000000000000000000000000000000");
+						}
+					break;
 				}
-				break;
-			case ".space":
-				double space = (double) Integer.parseInt(directive[1].replaceAll("\\s+",  ""));
-				for (double numberOfWords = Math.ceil(space/32); numberOfWords > 0; numberOfWords--)
-				{
-					Simulator.getDataMemory().add("00000000000000000000000000000000");
-				}
-				break;
 			}
-			return "nodata";
 		}
+		return outputBinary;
 	}
 	
 	/*public static void main(String[]args)

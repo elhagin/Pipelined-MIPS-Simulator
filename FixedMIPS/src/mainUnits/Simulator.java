@@ -1,16 +1,10 @@
 package mainUnits;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
 
 import memory.CU;
 import memory.InstructionDecode;
@@ -18,10 +12,10 @@ import memory.InstructionFetch;
 
 public class Simulator {
 	private static int PC;
-	private static InstructionFetch If ;
-	private static InstructionDecode ID ;
-	private static ArrayList <String> DataMemory;
-	private static ArrayList<String> InstructionMemory;
+	private static InstructionFetch fetchUnit ;
+	private static InstructionDecode decodeUnit ;
+	private static ArrayList <String> dataMemory;
+	private static ArrayList<String> instructionMemory;
 	private CU controlUnit;
 	private static Reader r;
 	private static HashMap<String, Integer> labels;
@@ -45,10 +39,10 @@ public class Simulator {
 
 	public Simulator(){
 		PC = 0;
-		If = new InstructionFetch();
-		ID = new InstructionDecode();
-		DataMemory = new ArrayList <String>();
-		InstructionMemory = new ArrayList <String>();
+		fetchUnit = new InstructionFetch();
+		decodeUnit = new InstructionDecode();
+		dataMemory = new ArrayList <String>();
+		instructionMemory = new ArrayList <String>();
 		labels = new HashMap<String, Integer>();
 		declarations = new HashMap<String, Integer>();
 		controlUnit = new CU();
@@ -56,54 +50,67 @@ public class Simulator {
 	}
 	
 	public static void main(String[]args) throws IOException{
-		Simulator x = new Simulator();
+		new Simulator();
 		addInstructionsCodeToMemory();
-		//System.out.println(x.getMemory());
-		//String memoryInUse = x.If.action();
-		//x.ID.action();
-		//System.out.println(x.ID.getInstructionCU());
+		if(fetchUnit.action().equals("program_done"))
+		{
+			return;
+		}
+		decodeUnit.action();
+		System.out.println(decodeUnit.getInstructionCU());
 	}
 	
 	public static void addInstructionsCodeToMemory() throws IOException{
-		Simulator s = new Simulator();
 		FileReader fileReader = new FileReader("program.txt");
 		BufferedReader bufferedReader = new BufferedReader(fileReader);
 		String line;
-		while ((line = bufferedReader.readLine()) != null) {
-			InstructionMemory.add(r.encodeCode(line));
+		while ((line = bufferedReader.readLine()) != null)
+		{
+			String encoding = r.encodeCode(line);
+			if (!encoding.equals("nodata"))
+			{
+				instructionMemory.add(encoding);
+			}
 		}
-		bufferedReader.close();
-		
+		bufferedReader.close();		
 	}
-	
-	public static InstructionFetch getIf() {
-		return If;
+
+	public static InstructionFetch getFetchUnit() {
+		return fetchUnit;
 	}
-	
-	public void setIf(InstructionFetch if1) {
-		If = if1;
+
+	public static void setFetchUnit(InstructionFetch fetchUnit) {
+		Simulator.fetchUnit = fetchUnit;
 	}
-	
-	public InstructionDecode getID() {
-		return ID;
+
+	public static InstructionDecode getDecodeUnit() {
+		return decodeUnit;
 	}
-	
-	public void setID(InstructionDecode iD) {
-		ID = iD;
+
+	public static void setDecodeUnit(InstructionDecode decodeUnit) {
+		Simulator.decodeUnit = decodeUnit;
 	}
-	
+
 	public static ArrayList<String> getDataMemory() {
-		return DataMemory;
+		return dataMemory;
 	}
-	
-	public void setDataMemory(ArrayList<String> memory) {
-		DataMemory = memory;
+
+	public static void setDataMemory(ArrayList<String> dataMemory) {
+		Simulator.dataMemory = dataMemory;
 	}
-	
+
+	public static ArrayList<String> getInstructionMemory() {
+		return instructionMemory;
+	}
+
+	public static void setInstructionMemory(ArrayList<String> instructionMemory) {
+		Simulator.instructionMemory = instructionMemory;
+	}
+
 	public CU getControlUnit() {
 		return controlUnit;
 	}
-	
+
 	public void setControlUnit(CU controlUnit) {
 		this.controlUnit = controlUnit;
 	}
@@ -114,14 +121,6 @@ public class Simulator {
 
 	public static void setLabels(HashMap<String, Integer> labels) {
 		Simulator.labels = labels;
-	}
-
-	public static ArrayList<String> getInstructionMemory() {
-		return InstructionMemory;
-	}
-
-	public static void setInstructionMemory(ArrayList<String> instructionMemory) {
-		InstructionMemory = instructionMemory;
 	}
 
 	public static HashMap<String, Integer> getDeclarations() {
