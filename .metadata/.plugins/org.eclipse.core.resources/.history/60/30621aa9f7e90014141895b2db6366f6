@@ -1,0 +1,110 @@
+package pipelineRegisters;
+
+public class IDEXReg
+{
+	private EX ex;
+	private M m;
+	private WB wb;
+	private int read1;
+	private int read2;
+	private int function;
+	private int i;
+	private int shift;
+	private int pc;
+	private int regDestination;
+	private int target;
+
+	public IDEXReg() {
+		super();
+	}
+
+	public EX getEx() {
+		return ex;
+	}
+
+	public void setEx(EX ex) {
+		this.ex = ex;
+	}
+
+	public M getM() {
+		return m;
+	}
+
+	public void setM(M m) {
+		this.m = m;
+	}
+
+	public WB getWb() {
+		return wb;
+	}
+
+	public void setWb(WB wb) {
+		this.wb = wb;
+	}
+
+	public int getRead1() {
+		return read1;
+	}
+
+	public void setRead1(int read1) {
+		this.read1 = read1;
+	}
+
+	public int getRead2() {
+		return read2;
+	}
+
+	public void setRead2(int read2) {
+		this.read2 = read2;
+	}
+
+	public int getFunction() {
+		return function;
+	}
+
+	public void setFunction(int function) {
+		this.function = function;
+	}
+
+	public int getI() {
+		return i;
+	}
+
+	public void setI(int i) {
+		this.i = i;
+	}
+
+	public int getShift() {
+		return shift;
+	}
+
+	public void setShift(int shift) {
+		this.shift = shift;
+	}
+
+	public int getPc() {
+		return pc;
+	}
+
+	public void setPc(int pc) {
+		this.pc = pc;
+	}
+
+	public int getRegDestination() {
+		return regDestination;
+	}
+
+	public void setRegDestination(int regDestination) {
+		this.regDestination = regDestination;
+	}
+
+	public int getTarget() {
+		return target;
+	}
+
+	public void setTarget(int target) {
+		this.target = target;
+	}
+
+
+}
