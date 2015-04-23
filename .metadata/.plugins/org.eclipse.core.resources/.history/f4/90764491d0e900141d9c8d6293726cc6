@@ -1,0 +1,4 @@
+.data
+test: 1, 3, 4
+.text
+shouldnot: 6, 6

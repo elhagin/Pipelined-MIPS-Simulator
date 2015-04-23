@@ -1,0 +1,5 @@
+.data
+test: .word 1, 3, 4
+test2:.word 1,2,2
+.text
+shouldnot: 6, 6
