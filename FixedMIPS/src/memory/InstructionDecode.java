@@ -11,7 +11,7 @@ public class InstructionDecode {
 	public  InstructionDecode(){
 	}
 	public  void action(){
-		String Instruction = Simulator.getMemory().get(Simulator.getPC()-1).toString();
+		String Instruction = Simulator.getInstructionMemory().get(Simulator.getPC()-1).toString();
 		setInstructionCU(Instruction.substring(0, 5));
 		setInstructionReadRegister1(Instruction.substring(6, 10));
 		setInstructionReadRegister2(Instruction.substring(11, 15));

@@ -1,17 +1,19 @@
 package memory;
 
-public class datamemory {
+import mainUnits.Simulator;
+
+public class DataMemory {
 	private CU cu = new CU();
 	private String OutputReadData;
-     public datamemory(){
+     public DataMemory(){
     	 OutputReadData = "";
      }
      public String ReadDataFromMemory(int x){
-    	 return Simulator.getMemory().get(x);
+    	 return Simulator.getDataMemory().get(x);
      }
-     public void action(int InputAddress,  String InputWriteData){
+     public void action(int InputAddress, String InputWriteData){
     	 if(cu.getMemWrite() == 1)
-    	    Simulator.getMemory().set(InputAddress,InputWriteData);
+    	    Simulator.getDataMemory().set(InputAddress,InputWriteData);
     	 else{
     		 if(cu.getMemRead() == 1)
     		    this.OutputReadData = ReadDataFromMemory(InputAddress);

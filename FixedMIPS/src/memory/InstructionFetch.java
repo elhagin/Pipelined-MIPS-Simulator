@@ -7,7 +7,7 @@ public class InstructionFetch {
 	}
 	public String action(){
 			Simulator.setPC(Simulator.getPC()+1);
-			return Simulator.getMemory().get(Simulator.getPC()-1);
+			return Simulator.getInstructionMemory().get(Simulator.getPC()-1);
 	}
 }
  	 	

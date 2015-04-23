@@ -1,22 +1,136 @@
 package mainUnits;
 
-
-import java.util.Scanner;
-
-
-
 public class Reader {
-	static String x;
-	static String [] split;
-	static String s ;
-	static String [] split2 ;
-	static String [] split3 ;
-	static int t;
-	static String v;
-	static String sheikh;
-	static String outputBinary = "";
-	static String FunctionCode = "";
-	static String ShiftAmount = "";
+	private static String [] split;
+	private static String s ;
+	private static String [] split2 ;
+	private static String [] split3 ;
+	private static int t;
+	private static String v;
+	private static String sheikh;
+	private static String outputBinary = "";
+	private static String FunctionCode = "";
+	private static String ShiftAmount = "";
+	private static boolean readingData = false;
+
+	public Reader(){
+		
+	}
+	
+	public String encodeCode(String h)
+	{
+		outputBinary = "";
+		FunctionCode = "";
+		ShiftAmount = "";
+		
+		if (!readingData)
+		{
+			split= h.split("\\s+",2);
+			if (split.length > 1)
+			{
+				s = split[1].replaceAll("\\s+", "");
+				split2 = s.split(",");
+			}
+			switch(split[0])
+			{
+				case ".data":readingData = true;break; 
+				case "add":checkAdd();break;
+				case "sub":checkSub();break;
+				case "and":checkAnd();break;
+				case "sll":checkSll();break;
+				case "srl":checkSrl();break;
+				case "nor":checkNor();break;
+				case "jr":checkJr();break;
+				case "slt":checkSlt();break;
+				case "sltu":checkSltu();break;
+				case "addi":checkAddi();break;
+				case "lb":checkLb();break;
+				case "lw":checkLw();break;
+				case "lbu":checkLbu();break;
+				case "sw":checkSw();break;
+				case "sb":checkSb();break;
+				case "lui":checkLui();break;
+				case "j":checkJ();break;
+				case "beq":checkBeq();break;
+				case "bne":checkBne();break;
+				case "jal":checkJal();break;
+			}
+		}
+		else
+		{
+			split = h.split(":", 2);
+			if (split.length == 1 && split[0].equals(".text"))
+			{
+				readingData = false;
+			}
+			else
+			{
+				s = split[1].replaceAll("^\\s+", "");
+				String[] directive = s.split("\\s+", 2);
+				switch(directive[0])
+				{
+					case ".word":
+						String[] words = directive[1].replaceAll("\\s+", "").split(",");
+						String numberInBinary = Integer.toBinaryString(Integer.parseInt(words[0]));
+						while (numberInBinary.length() < 32)
+							numberInBinary = "0" + numberInBinary;
+						String directiveLabel = split[0];
+						Simulator.getDataMemory().add(numberInBinary);
+						int memoryAddress = Simulator.getDataMemory().lastIndexOf(numberInBinary);
+						Simulator.getDeclarations().put(directiveLabel, memoryAddress);
+						for (int i = 1; i < words.length; i++)
+						{
+							numberInBinary = Integer.toBinaryString(Integer.parseInt(words[i]));
+							while (numberInBinary.length() < 32)
+								numberInBinary = "0" + numberInBinary;
+							Simulator.getDataMemory().add(numberInBinary);
+						}
+					break;
+					case ".space":
+						double space = (double) Integer.parseInt(directive[1].replaceAll("\\s+",  ""));
+						for (double numberOfWords = Math.ceil(space/32); numberOfWords > 0; numberOfWords--)
+						{
+							Simulator.getDataMemory().add("00000000000000000000000000000000");
+						}
+					break;
+				}
+			}
+		}
+		return outputBinary;
+	}
+	
+	/*public static void main(String[]args)
+	{		
+		Scanner sc = new Scanner(System.in);
+		x = sc.nextLine();
+		split= x.split("\\s+",2);
+		s = split[1].toString().replaceAll("\\s+", "");
+		split2 = s.split(",");
+		
+		switch(split[0]){
+			case "add":checkAdd();break;
+			case "sub":checkSub();break;
+			case "and":checkAnd();break;
+			case "sll":checkSll();break;
+			case "srl":checkSrl();break;
+			case "nor":checkNor();break;
+			case "jr":checkJr();break;
+			case "slt":checkSlt();break;
+			case "sltu":checkSltu();break;
+			case "addi":checkAddi();break;
+			case "lb":checkLb();break;
+			case "lw":checkLw();break;
+			case "lbu":checkLbu();break;
+			case "sw":checkSw();break;
+			case "sb":checkSb();break;
+			case "lui":checkLui();break;
+			case "j":checkJ();break;
+			case "beq":checkBeq();break;
+			case "bne":checkBne();break;
+			case "jal":checkJal();break;
+		}	
+		System.out.println(outputBinary);		
+	}*/
 	
 	public static void checkAdd(){
 		if(split[0].equals("add")){
@@ -1357,80 +1471,5 @@ public class Reader {
 			t = Integer.parseInt(split2[0]);sheikh = Integer.toBinaryString(0x1000000 | t).substring(1);outputBinary = outputBinary + sheikh;
 		}
 	}
-	
-	
-	public static void main(String[]args){
-		
-		Scanner sc = new Scanner(System.in);
-		x = sc.nextLine();
-		split= x.split("\\s+",2);
-		s = split[1].toString().replaceAll("\\s+", "");
-		split2 = s.split(",");
-		
-		switch(split[0]){
-			case "add":checkAdd();break;
-			case "sub":checkSub();break;
-			case "and":checkAnd();break;
-			case "sll":checkSll();break;
-			case "srl":checkSrl();break;
-			case "nor":checkNor();break;
-			case "jr":checkJr();break;
-			case "slt":checkSlt();break;
-			case "sltu":checkSltu();break;
-			case "addi":checkAddi();break;
-			case "lb":checkLb();break;
-			case "lw":checkLw();break;
-			case "lbu":checkLbu();break;
-			case "sw":checkSw();break;
-			case "sb":checkSb();break;
-			case "lui":checkLui();break;
-			case "j":checkJ();break;
-			case "beq":checkBeq();break;
-			case "bne":checkBne();break;
-			case "jal":checkJal();break;
-		}	
-		System.out.println(outputBinary);
-		
-		
-	}
-	
-	public Reader(){
-		
-	}
-	
-	public String encodeCode(String h){
-		outputBinary = "";
-		FunctionCode = "";
-		ShiftAmount = "";
-		x = h;
-		split= x.split("\\s+",2);
-		s = split[1].toString().replaceAll("\\s+", "");
-		split2 = s.split(",");
-		switch(split[0]){
-			case "add":checkAdd();break;
-			case "sub":checkSub();break;
-			case "and":checkAnd();break;
-			case "sll":checkSll();break;
-			case "srl":checkSrl();break;
-			case "nor":checkNor();break;
-			case "jr":checkJr();break;
-			case "slt":checkSlt();break;
-			case "sltu":checkSltu();break;
-			case "addi":checkAddi();break;
-			case "lb":checkLb();break;
-			case "lw":checkLw();break;
-			case "lbu":checkLbu();break;
-			case "sw":checkSw();break;
-			case "sb":checkSb();break;
-			case "lui":checkLui();break;
-			case "j":checkJ();break;
-			case "beq":checkBeq();break;
-			case "bne":checkBne();break;
-			case "jal":checkJal();break;
-		}
-		return outputBinary;
-	}
-	
-
 }
 

@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import memory.CU;
@@ -19,9 +20,12 @@ public class Simulator {
 	private static int PC;
 	private static InstructionFetch If ;
 	private static InstructionDecode ID ;
-	private static ArrayList <String> Memory;
+	private static ArrayList <String> DataMemory;
+	private static ArrayList<String> InstructionMemory;
 	private CU controlUnit;
 	private static Reader r;
+	private static HashMap<String, Integer> labels;
+	private static HashMap<String, Integer> declarations;
 	
 	public static int getPC() {
 		return PC;
@@ -43,35 +47,34 @@ public class Simulator {
 		PC = 0;
 		If = new InstructionFetch();
 		ID = new InstructionDecode();
-		Memory = new ArrayList <String>();
+		DataMemory = new ArrayList <String>();
+		InstructionMemory = new ArrayList <String>();
+		labels = new HashMap<String, Integer>();
+		declarations = new HashMap<String, Integer>();
 		controlUnit = new CU();
 		r = new Reader();
 	}
 	
 	public static void main(String[]args) throws IOException{
 		Simulator x = new Simulator();
-		x.addInstructionsCodeToMemory();
+		addInstructionsCodeToMemory();
 		//System.out.println(x.getMemory());
-		String memoryInUse = x.If.action();
-		x.ID.action();
-		System.out.println(x.ID.getInstructionCU());
+		//String memoryInUse = x.If.action();
+		//x.ID.action();
+		//System.out.println(x.ID.getInstructionCU());
 	}
 	
 	public static void addInstructionsCodeToMemory() throws IOException{
 		Simulator s = new Simulator();
-		FileReader fileReader = new FileReader("File.txt");
+		FileReader fileReader = new FileReader("program.txt");
 		BufferedReader bufferedReader = new BufferedReader(fileReader);
 		String line;
 		while ((line = bufferedReader.readLine()) != null) {
-			Memory.add(r.encodeCode(line));
+			InstructionMemory.add(r.encodeCode(line));
 		}
 		bufferedReader.close();
 		
 	}
-	
-	
-	
-	
 	
 	public static InstructionFetch getIf() {
 		return If;
@@ -89,12 +92,12 @@ public class Simulator {
 		ID = iD;
 	}
 	
-	public static ArrayList<String> getMemory() {
-		return Memory;
+	public static ArrayList<String> getDataMemory() {
+		return DataMemory;
 	}
 	
-	public void setMemory(ArrayList<String> memory) {
-		Memory = memory;
+	public void setDataMemory(ArrayList<String> memory) {
+		DataMemory = memory;
 	}
 	
 	public CU getControlUnit() {
@@ -102,6 +105,30 @@ public class Simulator {
 	}
 	
 	public void setControlUnit(CU controlUnit) {
-		controlUnit = controlUnit;
+		this.controlUnit = controlUnit;
+	}
+
+	public static HashMap<String, Integer> getLabels() {
+		return labels;
+	}
+
+	public static void setLabels(HashMap<String, Integer> labels) {
+		Simulator.labels = labels;
+	}
+
+	public static ArrayList<String> getInstructionMemory() {
+		return InstructionMemory;
+	}
+
+	public static void setInstructionMemory(ArrayList<String> instructionMemory) {
+		InstructionMemory = instructionMemory;
+	}
+
+	public static HashMap<String, Integer> getDeclarations() {
+		return declarations;
+	}
+
+	public static void setDeclarations(HashMap<String, Integer> declarations) {
+		Simulator.declarations = declarations;
 	}
 }
