@@ -1,0 +1,22 @@
+package pipelineRegisters;
+
+import mainUnits.Simulator;
+
+public class IDEXReg
+{
+	private static int memToReg;
+	private static int branch;
+	private static int aluOp;
+	private static int aluSrc;
+	private static int PC;
+	private static int regData1;
+	private static int regData2;
+	private static int immediateConstant;
+	private static String rt;
+	private static String rd;
+	
+	public IDEXReg()
+	{
+		
+	}
+}

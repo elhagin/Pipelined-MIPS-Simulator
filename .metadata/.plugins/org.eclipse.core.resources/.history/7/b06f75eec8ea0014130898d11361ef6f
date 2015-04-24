@@ -1,0 +1,17 @@
+package stages;
+
+import pipelineRegisters.EXMemReg;
+import pipelineRegisters.IDEXReg;
+
+public class InstructionExecute
+{
+	public void action()
+	{
+		EXMemReg.setMemToReg(IDEXReg.getMemToReg());
+		EXMemReg.setBranch(IDEXReg.getBranch());
+		EXMemReg.setRegWrite(IDEXReg.getRegWrite());
+		EXMemReg.setMemWrite(IDEXReg.getMemWrite());
+		EXMemReg.setMemRead(IDEXReg.getMemRead());
+		
+	}
+}

@@ -1,0 +1,23 @@
+package memory;
+
+import pipelineRegisters.IDEXReg;
+import pipelineRegisters.IFIDReg;
+import mainUnits.Simulator;
+
+public class InstructionFetch {	
+	
+	public String action()
+	{
+		if (Simulator.getInstructionMemory().size() - 1 < Simulator.getPC())
+		{
+			return "program_done";
+		}
+		String currentInstruction = Simulator.getInstructionMemory().get(Simulator.getPC());
+		Simulator.setPC(Simulator.getPC()+1);
+		IFIDReg.setInstruction(currentInstruction);
+		IFIDReg.setPC(Simulator.getPC());
+		IDEXReg.setPC(Simulator.getPC());
+		return currentInstruction;
+	}
+}
+ 	 	

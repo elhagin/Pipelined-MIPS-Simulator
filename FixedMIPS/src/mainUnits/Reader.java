@@ -4,10 +4,6 @@ public class Reader {
 	private static String [] split;
 	private static String s ;
 	private static String [] split2 ;
-	private static String [] split3 ;
-	private static int t;
-	private static String v;
-	private static String sheikh;
 	private static String outputBinary = "";
 	private static String FunctionCode = "";
 	private static String ShiftAmount = "";
@@ -47,7 +43,7 @@ public class Reader {
 				case "lb":checkLb();break;
 				case "lw":checkLw();break;
 				case "lbu":checkLbu();break;
-				case "sw":checkSw();break;
+				case "sw":checkSw();break; 
 				case "sb":checkSb();break;
 				case "lui":checkLui();break;
 				case "j":checkJ();break;
@@ -71,18 +67,29 @@ public class Reader {
 			{
 			case ".word":
 				String[] words = directive[1].replaceAll("\\s+", "").split(",");
-				String numberInBinary = Integer.toBinaryString(Integer.parseInt(words[0]));
+				int number = Integer.parseInt(words[0]);
+				String numberInBinary = Integer.toBinaryString(number);
+				char signBit;
+				if (number < 0)
+					signBit = numberInBinary.charAt(0);
+				else
+					signBit = '0';
 				while (numberInBinary.length() < 32)
-					numberInBinary = "0" + numberInBinary;
+					numberInBinary = signBit + numberInBinary;
 				String directiveLabel = split[0];
 				Simulator.getDataMemory().add(numberInBinary);
 				int memoryAddress = Simulator.getDataMemory().lastIndexOf(numberInBinary);
 				Simulator.getDeclarations().put(directiveLabel, memoryAddress);
 				for (int i = 1; i < words.length; i++)
 				{
-					numberInBinary = Integer.toBinaryString(Integer.parseInt(words[i]));
+					number = Integer.parseInt(words[i]);
+					numberInBinary = Integer.toBinaryString(number);
+					if (number < 0)
+						signBit = numberInBinary.charAt(0);
+					else
+						signBit = '0';
 					while (numberInBinary.length() < 32)
-						numberInBinary = "0" + numberInBinary;
+						numberInBinary = signBit + numberInBinary;
 					Simulator.getDataMemory().add(numberInBinary);
 				}
 				break;
@@ -98,72 +105,10 @@ public class Reader {
 		}
 	}
 	
-	/*public static void main(String[]args)
-	{		
-		Scanner sc = new Scanner(System.in);
-		x = sc.nextLine();
-		split= x.split("\\s+",2);
-		s = split[1].toString().replaceAll("\\s+", "");
-		split2 = s.split(",");
-		
-		switch(split[0]){
-			case "add":checkAdd();break;
-			case "sub":checkSub();break;
-			case "and":checkAnd();break;
-			case "sll":checkSll();break;
-			case "srl":checkSrl();break;
-			case "nor":checkNor();break;
-			case "jr":checkJr();break;
-			case "slt":checkSlt();break;
-			case "sltu":checkSltu();break;
-			case "addi":checkAddi();break;
-			case "lb":checkLb();break;
-			case "lw":checkLw();break;
-			case "lbu":checkLbu();break;
-			case "sw":checkSw();break;
-			case "sb":checkSb();break;
-			case "lui":checkLui();break;
-			case "j":checkJ();break;
-			case "beq":checkBeq();break;
-			case "bne":checkBne();break;
-			case "jal":checkJal();break;
-		}	
-		System.out.println(outputBinary);		
-	}*/
-	
 	public static void checkAdd(){
 		if(split[0].equals("add")){
 			outputBinary = outputBinary + "000000";
 			ShiftAmount = ShiftAmount + "00000";
-			switch(split2[0]){
-				case "$t0":outputBinary = outputBinary + "01000";break;
-				case "$t1":outputBinary = outputBinary + "01001";break;
-				case "$t2":outputBinary = outputBinary + "01010";break;
-				case "$t3":outputBinary = outputBinary + "01011";break;
-				case "$t4":outputBinary = outputBinary + "01100";break;
-				case "$t5":outputBinary = outputBinary + "01101";break;
-				case "$t6":outputBinary = outputBinary + "01110";break;
-				case "$t7":outputBinary = outputBinary + "01111";break;
-				case "$at":outputBinary = outputBinary + "00001";break;
-				case "$a0":outputBinary = outputBinary + "00100";break;
-				case "$a1":outputBinary = outputBinary + "00101";break;
-				case "$a2":outputBinary = outputBinary + "00110";break;
-				case "$a3":outputBinary = outputBinary + "00111";break;
-				case "$v0":outputBinary = outputBinary + "00010";break;
-				case "$v1":outputBinary = outputBinary + "00011";break;
-				case "$t8":outputBinary = outputBinary + "11000";break;
-				case "$t9":outputBinary = outputBinary + "11001";break;
-				case "$s0":outputBinary = outputBinary + "10000";break;
-				case "$s1":outputBinary = outputBinary + "10001";break;
-				case "$s2":outputBinary = outputBinary + "10010";break;
-				case "$s3":outputBinary = outputBinary + "10011";break;
-				case "$s4":outputBinary = outputBinary + "10100";break;
-				case "$s5":outputBinary = outputBinary + "10101";break;
-				case "$s6":outputBinary = outputBinary + "10110";break;
-				case "$s7":outputBinary = outputBinary + "10111";break;
-				case "$k0":outputBinary = outputBinary + "11010";break;
-				case "$k1":outputBinary = outputBinary + "11011";break;
-			}
 			switch(split2[1]){
 				case "$t0":outputBinary = outputBinary + "01000";break;
 				case "$t1":outputBinary = outputBinary + "01001";break;
@@ -194,6 +139,35 @@ public class Reader {
 				case "$k1":outputBinary = outputBinary + "11011";break;
 			}
 			switch(split2[2]){
+				case "$t0":outputBinary = outputBinary + "01000";break;
+				case "$t1":outputBinary = outputBinary + "01001";break;
+				case "$t2":outputBinary = outputBinary + "01010";break;
+				case "$t3":outputBinary = outputBinary + "01011";break;
+				case "$t4":outputBinary = outputBinary + "01100";break;
+				case "$t5":outputBinary = outputBinary + "01101";break;
+				case "$t6":outputBinary = outputBinary + "01110";break;
+				case "$t7":outputBinary = outputBinary + "01111";break;
+				case "$at":outputBinary = outputBinary + "00001";break;
+				case "$a0":outputBinary = outputBinary + "00100";break;
+				case "$a1":outputBinary = outputBinary + "00101";break;
+				case "$a2":outputBinary = outputBinary + "00110";break;
+				case "$a3":outputBinary = outputBinary + "00111";break;
+				case "$v0":outputBinary = outputBinary + "00010";break;
+				case "$v1":outputBinary = outputBinary + "00011";break;
+				case "$t8":outputBinary = outputBinary + "11000";break;
+				case "$t9":outputBinary = outputBinary + "11001";break;
+				case "$s0":outputBinary = outputBinary + "10000";break;
+				case "$s1":outputBinary = outputBinary + "10001";break;
+				case "$s2":outputBinary = outputBinary + "10010";break;
+				case "$s3":outputBinary = outputBinary + "10011";break;
+				case "$s4":outputBinary = outputBinary + "10100";break;
+				case "$s5":outputBinary = outputBinary + "10101";break;
+				case "$s6":outputBinary = outputBinary + "10110";break;
+				case "$s7":outputBinary = outputBinary + "10111";break;
+				case "$k0":outputBinary = outputBinary + "11010";break;
+				case "$k1":outputBinary = outputBinary + "11011";break;
+			}
+			switch(split2[0]){
 				case "$t0":outputBinary = outputBinary + "01000";break;
 				case "$t1":outputBinary = outputBinary + "01001";break;
 				case "$t2":outputBinary = outputBinary + "01010";break;
@@ -232,35 +206,6 @@ public class Reader {
 		if(split[0].equals("sub")){
 			outputBinary = outputBinary + "000000";
 			ShiftAmount = ShiftAmount + "00000";
-			switch(split2[0]){
-				case "$t0":outputBinary = outputBinary + "01000";break;
-				case "$t1":outputBinary = outputBinary + "01001";break;
-				case "$t2":outputBinary = outputBinary + "01010";break;
-				case "$t3":outputBinary = outputBinary + "01011";break;
-				case "$t4":outputBinary = outputBinary + "01100";break;
-				case "$t5":outputBinary = outputBinary + "01101";break;
-				case "$t6":outputBinary = outputBinary + "01110";break;
-				case "$t7":outputBinary = outputBinary + "01111";break;
-				case "$at":outputBinary = outputBinary + "00001";break;
-				case "$a0":outputBinary = outputBinary + "00100";break;
-				case "$a1":outputBinary = outputBinary + "00101";break;
-				case "$a2":outputBinary = outputBinary + "00110";break;
-				case "$a3":outputBinary = outputBinary + "00111";break;
-				case "$v0":outputBinary = outputBinary + "00010";break;
-				case "$v1":outputBinary = outputBinary + "00011";break;
-				case "$t8":outputBinary = outputBinary + "11000";break;
-				case "$t9":outputBinary = outputBinary + "11001";break;
-				case "$s0":outputBinary = outputBinary + "10000";break;
-				case "$s1":outputBinary = outputBinary + "10001";break;
-				case "$s2":outputBinary = outputBinary + "10010";break;
-				case "$s3":outputBinary = outputBinary + "10011";break;
-				case "$s4":outputBinary = outputBinary + "10100";break;
-				case "$s5":outputBinary = outputBinary + "10101";break;
-				case "$s6":outputBinary = outputBinary + "10110";break;
-				case "$s7":outputBinary = outputBinary + "10111";break;
-				case "$k0":outputBinary = outputBinary + "11010";break;
-				case "$k1":outputBinary = outputBinary + "11011";break;
-			}
 			switch(split2[1]){
 				case "$t0":outputBinary = outputBinary + "01000";break;
 				case "$t1":outputBinary = outputBinary + "01001";break;
@@ -291,6 +236,35 @@ public class Reader {
 				case "$k1":outputBinary = outputBinary + "11011";break;
 			}
 			switch(split2[2]){
+				case "$t0":outputBinary = outputBinary + "01000";break;
+				case "$t1":outputBinary = outputBinary + "01001";break;
+				case "$t2":outputBinary = outputBinary + "01010";break;
+				case "$t3":outputBinary = outputBinary + "01011";break;
+				case "$t4":outputBinary = outputBinary + "01100";break;
+				case "$t5":outputBinary = outputBinary + "01101";break;
+				case "$t6":outputBinary = outputBinary + "01110";break;
+				case "$t7":outputBinary = outputBinary + "01111";break;
+				case "$at":outputBinary = outputBinary + "00001";break;
+				case "$a0":outputBinary = outputBinary + "00100";break;
+				case "$a1":outputBinary = outputBinary + "00101";break;
+				case "$a2":outputBinary = outputBinary + "00110";break;
+				case "$a3":outputBinary = outputBinary + "00111";break;
+				case "$v0":outputBinary = outputBinary + "00010";break;
+				case "$v1":outputBinary = outputBinary + "00011";break;
+				case "$t8":outputBinary = outputBinary + "11000";break;
+				case "$t9":outputBinary = outputBinary + "11001";break;
+				case "$s0":outputBinary = outputBinary + "10000";break;
+				case "$s1":outputBinary = outputBinary + "10001";break;
+				case "$s2":outputBinary = outputBinary + "10010";break;
+				case "$s3":outputBinary = outputBinary + "10011";break;
+				case "$s4":outputBinary = outputBinary + "10100";break;
+				case "$s5":outputBinary = outputBinary + "10101";break;
+				case "$s6":outputBinary = outputBinary + "10110";break;
+				case "$s7":outputBinary = outputBinary + "10111";break;
+				case "$k0":outputBinary = outputBinary + "11010";break;
+				case "$k1":outputBinary = outputBinary + "11011";break;
+			}
+			switch(split2[0]){
 				case "$t0":outputBinary = outputBinary + "01000";break;
 				case "$t1":outputBinary = outputBinary + "01001";break;
 				case "$t2":outputBinary = outputBinary + "01010";break;
@@ -329,35 +303,6 @@ public class Reader {
 		if(split[0].equals("and")){
 			outputBinary = outputBinary + "000000";
 			ShiftAmount = ShiftAmount + "00000";
-			switch(split2[0]){
-				case "$t0":outputBinary = outputBinary + "01000";break;
-				case "$t1":outputBinary = outputBinary + "01001";break;
-				case "$t2":outputBinary = outputBinary + "01010";break;
-				case "$t3":outputBinary = outputBinary + "01011";break;
-				case "$t4":outputBinary = outputBinary + "01100";break;
-				case "$t5":outputBinary = outputBinary + "01101";break;
-				case "$t6":outputBinary = outputBinary + "01110";break;
-				case "$t7":outputBinary = outputBinary + "01111";break;
-				case "$at":outputBinary = outputBinary + "00001";break;
-				case "$a0":outputBinary = outputBinary + "00100";break;
-				case "$a1":outputBinary = outputBinary + "00101";break;
-				case "$a2":outputBinary = outputBinary + "00110";break;
-				case "$a3":outputBinary = outputBinary + "00111";break;
-				case "$v0":outputBinary = outputBinary + "00010";break;
-				case "$v1":outputBinary = outputBinary + "00011";break;
-				case "$t8":outputBinary = outputBinary + "11000";break;
-				case "$t9":outputBinary = outputBinary + "11001";break;
-				case "$s0":outputBinary = outputBinary + "10000";break;
-				case "$s1":outputBinary = outputBinary + "10001";break;
-				case "$s2":outputBinary = outputBinary + "10010";break;
-				case "$s3":outputBinary = outputBinary + "10011";break;
-				case "$s4":outputBinary = outputBinary + "10100";break;
-				case "$s5":outputBinary = outputBinary + "10101";break;
-				case "$s6":outputBinary = outputBinary + "10110";break;
-				case "$s7":outputBinary = outputBinary + "10111";break;
-				case "$k0":outputBinary = outputBinary + "11010";break;
-				case "$k1":outputBinary = outputBinary + "11011";break;
-			}
 			switch(split2[1]){
 				case "$t0":outputBinary = outputBinary + "01000";break;
 				case "$t1":outputBinary = outputBinary + "01001";break;
@@ -388,6 +333,35 @@ public class Reader {
 				case "$k1":outputBinary = outputBinary + "11011";break;
 			}
 			switch(split2[2]){
+				case "$t0":outputBinary = outputBinary + "01000";break;
+				case "$t1":outputBinary = outputBinary + "01001";break;
+				case "$t2":outputBinary = outputBinary + "01010";break;
+				case "$t3":outputBinary = outputBinary + "01011";break;
+				case "$t4":outputBinary = outputBinary + "01100";break;
+				case "$t5":outputBinary = outputBinary + "01101";break;
+				case "$t6":outputBinary = outputBinary + "01110";break;
+				case "$t7":outputBinary = outputBinary + "01111";break;
+				case "$at":outputBinary = outputBinary + "00001";break;
+				case "$a0":outputBinary = outputBinary + "00100";break;
+				case "$a1":outputBinary = outputBinary + "00101";break;
+				case "$a2":outputBinary = outputBinary + "00110";break;
+				case "$a3":outputBinary = outputBinary + "00111";break;
+				case "$v0":outputBinary = outputBinary + "00010";break;
+				case "$v1":outputBinary = outputBinary + "00011";break;
+				case "$t8":outputBinary = outputBinary + "11000";break;
+				case "$t9":outputBinary = outputBinary + "11001";break;
+				case "$s0":outputBinary = outputBinary + "10000";break;
+				case "$s1":outputBinary = outputBinary + "10001";break;
+				case "$s2":outputBinary = outputBinary + "10010";break;
+				case "$s3":outputBinary = outputBinary + "10011";break;
+				case "$s4":outputBinary = outputBinary + "10100";break;
+				case "$s5":outputBinary = outputBinary + "10101";break;
+				case "$s6":outputBinary = outputBinary + "10110";break;
+				case "$s7":outputBinary = outputBinary + "10111";break;
+				case "$k0":outputBinary = outputBinary + "11010";break;
+				case "$k1":outputBinary = outputBinary + "11011";break;
+			}
+			switch(split2[0]){
 				case "$t0":outputBinary = outputBinary + "01000";break;
 				case "$t1":outputBinary = outputBinary + "01001";break;
 				case "$t2":outputBinary = outputBinary + "01010";break;
@@ -424,8 +398,36 @@ public class Reader {
 	
 	public static void checkSll(){
 		if(split[0].equals("sll")){
-			outputBinary = outputBinary + "000000";
-			ShiftAmount = ShiftAmount + "00000";
+				outputBinary = outputBinary + "00000000000";
+			switch(split2[1]){
+				case "$t0":outputBinary = outputBinary + "01000";break;
+				case "$t1":outputBinary = outputBinary + "01001";break;
+				case "$t2":outputBinary = outputBinary + "01010";break;
+				case "$t3":outputBinary = outputBinary + "01011";break;
+				case "$t4":outputBinary = outputBinary + "01100";break;
+				case "$t5":outputBinary = outputBinary + "01101";break;
+				case "$t6":outputBinary = outputBinary + "01110";break;
+				case "$t7":outputBinary = outputBinary + "01111";break;
+				case "$at":outputBinary = outputBinary + "00001";break;
+				case "$a0":outputBinary = outputBinary + "00100";break;
+				case "$a1":outputBinary = outputBinary + "00101";break;
+				case "$a2":outputBinary = outputBinary + "00110";break;
+				case "$a3":outputBinary = outputBinary + "00111";break;
+				case "$v0":outputBinary = outputBinary + "00010";break;
+				case "$v1":outputBinary = outputBinary + "00011";break;
+				case "$t8":outputBinary = outputBinary + "11000";break;
+				case "$t9":outputBinary = outputBinary + "11001";break;
+				case "$s0":outputBinary = outputBinary + "10000";break;
+				case "$s1":outputBinary = outputBinary + "10001";break;
+				case "$s2":outputBinary = outputBinary + "10010";break;
+				case "$s3":outputBinary = outputBinary + "10011";break;
+				case "$s4":outputBinary = outputBinary + "10100";break;
+				case "$s5":outputBinary = outputBinary + "10101";break;
+				case "$s6":outputBinary = outputBinary + "10110";break;
+				case "$s7":outputBinary = outputBinary + "10111";break;
+				case "$k0":outputBinary = outputBinary + "11010";break;
+				case "$k1":outputBinary = outputBinary + "11011";break;
+			}
 			switch(split2[0]){
 				case "$t0":outputBinary = outputBinary + "01000";break;
 				case "$t1":outputBinary = outputBinary + "01001";break;
@@ -455,36 +457,11 @@ public class Reader {
 				case "$k0":outputBinary = outputBinary + "11010";break;
 				case "$k1":outputBinary = outputBinary + "11011";break;
 			}
-			switch(split2[1]){
-				case "$t0":outputBinary = outputBinary + "01000";break;
-				case "$t1":outputBinary = outputBinary + "01001";break;
-				case "$t2":outputBinary = outputBinary + "01010";break;
-				case "$t3":outputBinary = outputBinary + "01011";break;
-				case "$t4":outputBinary = outputBinary + "01100";break;
-				case "$t5":outputBinary = outputBinary + "01101";break;
-				case "$t6":outputBinary = outputBinary + "01110";break;
-				case "$t7":outputBinary = outputBinary + "01111";break;
-				case "$at":outputBinary = outputBinary + "00001";break;
-				case "$a0":outputBinary = outputBinary + "00100";break;
-				case "$a1":outputBinary = outputBinary + "00101";break;
-				case "$a2":outputBinary = outputBinary + "00110";break;
-				case "$a3":outputBinary = outputBinary + "00111";break;
-				case "$v0":outputBinary = outputBinary + "00010";break;
-				case "$v1":outputBinary = outputBinary + "00011";break;
-				case "$t8":outputBinary = outputBinary + "11000";break;
-				case "$t9":outputBinary = outputBinary + "11001";break;
-				case "$s0":outputBinary = outputBinary + "10000";break;
-				case "$s1":outputBinary = outputBinary + "10001";break;
-				case "$s2":outputBinary = outputBinary + "10010";break;
-				case "$s3":outputBinary = outputBinary + "10011";break;
-				case "$s4":outputBinary = outputBinary + "10100";break;
-				case "$s5":outputBinary = outputBinary + "10101";break;
-				case "$s6":outputBinary = outputBinary + "10110";break;
-				case "$s7":outputBinary = outputBinary + "10111";break;
-				case "$k0":outputBinary = outputBinary + "11010";break;
-				case "$k1":outputBinary = outputBinary + "11011";break;
-			}
-			int m = Integer.parseInt(split2[2]);ShiftAmount = Integer.toBinaryString(0x10000 | m).substring(1);outputBinary = outputBinary + ShiftAmount;
+			int number = Integer.parseInt(split2[2]);
+			String shamt = Integer.toBinaryString(number);
+			while (shamt.length() < 5)
+				shamt = "0" + shamt;
+			outputBinary += shamt;
 			FunctionCode = FunctionCode+"000000";
 			outputBinary = outputBinary + FunctionCode;
 		}
@@ -492,9 +469,9 @@ public class Reader {
 	
 	public static void checkSrl(){
 		if(split[0].equals("srl")){
-			outputBinary = outputBinary + "000000";
+			outputBinary = outputBinary + "00000000000";
 			ShiftAmount = ShiftAmount + "00000";
-				switch(split2[0]){
+				switch(split2[1]){
 				case "$t0":outputBinary = outputBinary + "01000";break;
 				case "$t1":outputBinary = outputBinary + "01001";break;
 				case "$t2":outputBinary = outputBinary + "01010";break;
@@ -523,7 +500,7 @@ public class Reader {
 				case "$k0":outputBinary = outputBinary + "11010";break;
 				case "$k1":outputBinary = outputBinary + "11011";break;
 			}
-			switch(split2[1]){
+			switch(split2[0]){
 				case "$t0":outputBinary = outputBinary + "01000";break;
 				case "$t1":outputBinary = outputBinary + "01001";break;
 				case "$t2":outputBinary = outputBinary + "01010";break;
@@ -552,7 +529,11 @@ public class Reader {
 				case "$k0":outputBinary = outputBinary + "11010";break;
 				case "$k1":outputBinary = outputBinary + "11011";break;
 			}
-			int n = Integer.parseInt(split2[2]);ShiftAmount = Integer.toBinaryString(0x10 | n).substring(1);outputBinary = outputBinary + ShiftAmount;
+			int number = Integer.parseInt(split2[2]);
+			String shamt = Integer.toBinaryString(number);
+			while (shamt.length() < 5)
+				shamt = "0" + shamt;
+			outputBinary += shamt;
 			FunctionCode = FunctionCode+"000010";
 			outputBinary = outputBinary + FunctionCode;
 		}
@@ -562,35 +543,6 @@ public class Reader {
 		if(split[0].equals("nor")){
 			outputBinary = outputBinary + "000000";
 			ShiftAmount = ShiftAmount + "00000";
-			switch(split2[0]){
-				case "$t0":outputBinary = outputBinary + "01000";break;
-				case "$t1":outputBinary = outputBinary + "01001";break;
-				case "$t2":outputBinary = outputBinary + "01010";break;
-				case "$t3":outputBinary = outputBinary + "01011";break;
-				case "$t4":outputBinary = outputBinary + "01100";break;
-				case "$t5":outputBinary = outputBinary + "01101";break;
-				case "$t6":outputBinary = outputBinary + "01110";break;
-				case "$t7":outputBinary = outputBinary + "01111";break;
-				case "$at":outputBinary = outputBinary + "00001";break;
-				case "$a0":outputBinary = outputBinary + "00100";break;
-				case "$a1":outputBinary = outputBinary + "00101";break;
-				case "$a2":outputBinary = outputBinary + "00110";break;
-				case "$a3":outputBinary = outputBinary + "00111";break;
-				case "$v0":outputBinary = outputBinary + "00010";break;
-				case "$v1":outputBinary = outputBinary + "00011";break;
-				case "$t8":outputBinary = outputBinary + "11000";break;
-				case "$t9":outputBinary = outputBinary + "11001";break;
-				case "$s0":outputBinary = outputBinary + "10000";break;
-				case "$s1":outputBinary = outputBinary + "10001";break;
-				case "$s2":outputBinary = outputBinary + "10010";break;
-				case "$s3":outputBinary = outputBinary + "10011";break;
-				case "$s4":outputBinary = outputBinary + "10100";break;
-				case "$s5":outputBinary = outputBinary + "10101";break;
-				case "$s6":outputBinary = outputBinary + "10110";break;
-				case "$s7":outputBinary = outputBinary + "10111";break;
-				case "$k0":outputBinary = outputBinary + "11010";break;
-				case "$k1":outputBinary = outputBinary + "11011";break;
-			}
 			switch(split2[1]){
 				case "$t0":outputBinary = outputBinary + "01000";break;
 				case "$t1":outputBinary = outputBinary + "01001";break;
@@ -621,6 +573,35 @@ public class Reader {
 				case "$k1":outputBinary = outputBinary + "11011";break;
 			}
 			switch(split2[2]){
+				case "$t0":outputBinary = outputBinary + "01000";break;
+				case "$t1":outputBinary = outputBinary + "01001";break;
+				case "$t2":outputBinary = outputBinary + "01010";break;
+				case "$t3":outputBinary = outputBinary + "01011";break;
+				case "$t4":outputBinary = outputBinary + "01100";break;
+				case "$t5":outputBinary = outputBinary + "01101";break;
+				case "$t6":outputBinary = outputBinary + "01110";break;
+				case "$t7":outputBinary = outputBinary + "01111";break;
+				case "$at":outputBinary = outputBinary + "00001";break;
+				case "$a0":outputBinary = outputBinary + "00100";break;
+				case "$a1":outputBinary = outputBinary + "00101";break;
+				case "$a2":outputBinary = outputBinary + "00110";break;
+				case "$a3":outputBinary = outputBinary + "00111";break;
+				case "$v0":outputBinary = outputBinary + "00010";break;
+				case "$v1":outputBinary = outputBinary + "00011";break;
+				case "$t8":outputBinary = outputBinary + "11000";break;
+				case "$t9":outputBinary = outputBinary + "11001";break;
+				case "$s0":outputBinary = outputBinary + "10000";break;
+				case "$s1":outputBinary = outputBinary + "10001";break;
+				case "$s2":outputBinary = outputBinary + "10010";break;
+				case "$s3":outputBinary = outputBinary + "10011";break;
+				case "$s4":outputBinary = outputBinary + "10100";break;
+				case "$s5":outputBinary = outputBinary + "10101";break;
+				case "$s6":outputBinary = outputBinary + "10110";break;
+				case "$s7":outputBinary = outputBinary + "10111";break;
+				case "$k0":outputBinary = outputBinary + "11010";break;
+				case "$k1":outputBinary = outputBinary + "11011";break;
+			}
+			switch(split2[0]){
 				case "$t0":outputBinary = outputBinary + "01000";break;
 				case "$t1":outputBinary = outputBinary + "01001";break;
 				case "$t2":outputBinary = outputBinary + "01010";break;
@@ -655,76 +636,10 @@ public class Reader {
 		}
 	}
 	
-	public static void checkJr(){
-		if(split[0].equals("jr")){
-			outputBinary = outputBinary + "000000";
-			switch(split2[0]){
-				case "$t0":outputBinary = outputBinary + "01000";break;
-				case "$t1":outputBinary = outputBinary + "01001";break;
-				case "$t2":outputBinary = outputBinary + "01010";break;
-				case "$t3":outputBinary = outputBinary + "01011";break;
-				case "$t4":outputBinary = outputBinary + "01100";break;
-				case "$t5":outputBinary = outputBinary + "01101";break;
-				case "$t6":outputBinary = outputBinary + "01110";break;
-				case "$t7":outputBinary = outputBinary + "01111";break;
-				case "$at":outputBinary = outputBinary + "00001";break;
-				case "$a0":outputBinary = outputBinary + "00100";break;
-				case "$a1":outputBinary = outputBinary + "00101";break;
-				case "$a2":outputBinary = outputBinary + "00110";break;
-				case "$a3":outputBinary = outputBinary + "00111";break;
-				case "$v0":outputBinary = outputBinary + "00010";break;
-				case "$v1":outputBinary = outputBinary + "00011";break;
-				case "$t8":outputBinary = outputBinary + "11000";break;
-				case "$t9":outputBinary = outputBinary + "11001";break;
-				case "$s0":outputBinary = outputBinary + "10000";break;
-				case "$s1":outputBinary = outputBinary + "10001";break;
-				case "$s2":outputBinary = outputBinary + "10010";break;
-				case "$s3":outputBinary = outputBinary + "10011";break;
-				case "$s4":outputBinary = outputBinary + "10100";break;
-				case "$s5":outputBinary = outputBinary + "10101";break;
-				case "$s6":outputBinary = outputBinary + "10110";break;
-				case "$s7":outputBinary = outputBinary + "10111";break;
-				case "$k0":outputBinary = outputBinary + "11010";break;
-				case "$k1":outputBinary = outputBinary + "11011";break;
-			}
-			outputBinary = outputBinary + "000000000000000";
-			FunctionCode = FunctionCode+"001000";
-			outputBinary = outputBinary + FunctionCode;
-		}
-	}
-	
 	public static void checkSlt(){
 		if(split[0].equals("slt")){
 			outputBinary = outputBinary + "000000";
-			switch(split2[0]){
-				case "$t0":outputBinary = outputBinary + "01000";break;
-				case "$t1":outputBinary = outputBinary + "01001";break;
-				case "$t2":outputBinary = outputBinary + "01010";break;
-				case "$t3":outputBinary = outputBinary + "01011";break;
-				case "$t4":outputBinary = outputBinary + "01100";break;
-				case "$t5":outputBinary = outputBinary + "01101";break;
-				case "$t6":outputBinary = outputBinary + "01110";break;
-				case "$t7":outputBinary = outputBinary + "01111";break;
-				case "$at":outputBinary = outputBinary + "00001";break;
-				case "$a0":outputBinary = outputBinary + "00100";break;
-				case "$a1":outputBinary = outputBinary + "00101";break;
-				case "$a2":outputBinary = outputBinary + "00110";break;
-				case "$a3":outputBinary = outputBinary + "00111";break;
-				case "$v0":outputBinary = outputBinary + "00010";break;
-				case "$v1":outputBinary = outputBinary + "00011";break;
-				case "$t8":outputBinary = outputBinary + "11000";break;
-				case "$t9":outputBinary = outputBinary + "11001";break;
-				case "$s0":outputBinary = outputBinary + "10000";break;
-				case "$s1":outputBinary = outputBinary + "10001";break;
-				case "$s2":outputBinary = outputBinary + "10010";break;
-				case "$s3":outputBinary = outputBinary + "10011";break;
-				case "$s4":outputBinary = outputBinary + "10100";break;
-				case "$s5":outputBinary = outputBinary + "10101";break;
-				case "$s6":outputBinary = outputBinary + "10110";break;
-				case "$s7":outputBinary = outputBinary + "10111";break;
-				case "$k0":outputBinary = outputBinary + "11010";break;
-				case "$k1":outputBinary = outputBinary + "11011";break;
-			}
+			ShiftAmount = ShiftAmount + "00000";
 			switch(split2[1]){
 				case "$t0":outputBinary = outputBinary + "01000";break;
 				case "$t1":outputBinary = outputBinary + "01001";break;
@@ -783,7 +698,36 @@ public class Reader {
 				case "$k0":outputBinary = outputBinary + "11010";break;
 				case "$k1":outputBinary = outputBinary + "11011";break;
 			}
-			outputBinary = outputBinary + "000000";
+			switch(split2[0]){
+				case "$t0":outputBinary = outputBinary + "01000";break;
+				case "$t1":outputBinary = outputBinary + "01001";break;
+				case "$t2":outputBinary = outputBinary + "01010";break;
+				case "$t3":outputBinary = outputBinary + "01011";break;
+				case "$t4":outputBinary = outputBinary + "01100";break;
+				case "$t5":outputBinary = outputBinary + "01101";break;
+				case "$t6":outputBinary = outputBinary + "01110";break;
+				case "$t7":outputBinary = outputBinary + "01111";break;
+				case "$at":outputBinary = outputBinary + "00001";break;
+				case "$a0":outputBinary = outputBinary + "00100";break;
+				case "$a1":outputBinary = outputBinary + "00101";break;
+				case "$a2":outputBinary = outputBinary + "00110";break;
+				case "$a3":outputBinary = outputBinary + "00111";break;
+				case "$v0":outputBinary = outputBinary + "00010";break;
+				case "$v1":outputBinary = outputBinary + "00011";break;
+				case "$t8":outputBinary = outputBinary + "11000";break;
+				case "$t9":outputBinary = outputBinary + "11001";break;
+				case "$s0":outputBinary = outputBinary + "10000";break;
+				case "$s1":outputBinary = outputBinary + "10001";break;
+				case "$s2":outputBinary = outputBinary + "10010";break;
+				case "$s3":outputBinary = outputBinary + "10011";break;
+				case "$s4":outputBinary = outputBinary + "10100";break;
+				case "$s5":outputBinary = outputBinary + "10101";break;
+				case "$s6":outputBinary = outputBinary + "10110";break;
+				case "$s7":outputBinary = outputBinary + "10111";break;
+				case "$k0":outputBinary = outputBinary + "11010";break;
+				case "$k1":outputBinary = outputBinary + "11011";break;
+			}
+			outputBinary = outputBinary + ShiftAmount;
 			FunctionCode = FunctionCode+"101010";
 			outputBinary = outputBinary + FunctionCode;
 		}
@@ -794,35 +738,6 @@ public class Reader {
 		if(split[0].equals("sltu")){
 			outputBinary = outputBinary + "000000";
 			ShiftAmount = ShiftAmount + "00000";
-			switch(split2[0]){
-				case "$t0":outputBinary = outputBinary + "01000";break;
-				case "$t1":outputBinary = outputBinary + "01001";break;
-				case "$t2":outputBinary = outputBinary + "01010";break;
-				case "$t3":outputBinary = outputBinary + "01011";break;
-				case "$t4":outputBinary = outputBinary + "01100";break;
-				case "$t5":outputBinary = outputBinary + "01101";break;
-				case "$t6":outputBinary = outputBinary + "01110";break;
-				case "$t7":outputBinary = outputBinary + "01111";break;
-				case "$at":outputBinary = outputBinary + "00001";break;
-				case "$a0":outputBinary = outputBinary + "00100";break;
-				case "$a1":outputBinary = outputBinary + "00101";break;
-				case "$a2":outputBinary = outputBinary + "00110";break;
-				case "$a3":outputBinary = outputBinary + "00111";break;
-				case "$v0":outputBinary = outputBinary + "00010";break;
-				case "$v1":outputBinary = outputBinary + "00011";break;
-				case "$t8":outputBinary = outputBinary + "11000";break;
-				case "$t9":outputBinary = outputBinary + "11001";break;
-				case "$s0":outputBinary = outputBinary + "10000";break;
-				case "$s1":outputBinary = outputBinary + "10001";break;
-				case "$s2":outputBinary = outputBinary + "10010";break;
-				case "$s3":outputBinary = outputBinary + "10011";break;
-				case "$s4":outputBinary = outputBinary + "10100";break;
-				case "$s5":outputBinary = outputBinary + "10101";break;
-				case "$s6":outputBinary = outputBinary + "10110";break;
-				case "$s7":outputBinary = outputBinary + "10111";break;
-				case "$k0":outputBinary = outputBinary + "11010";break;
-				case "$k1":outputBinary = outputBinary + "11011";break;
-			}
 			switch(split2[1]){
 				case "$t0":outputBinary = outputBinary + "01000";break;
 				case "$t1":outputBinary = outputBinary + "01001";break;
@@ -881,13 +796,6 @@ public class Reader {
 				case "$k0":outputBinary = outputBinary + "11010";break;
 				case "$k1":outputBinary = outputBinary + "11011";break;
 			}
-			outputBinary = outputBinary + "000000";
-		}
-	}
-	
-	public static void checkAddi(){
-		if(split[0].equals("addi")){
-			outputBinary = outputBinary + "001000";
 			switch(split2[0]){
 				case "$t0":outputBinary = outputBinary + "01000";break;
 				case "$t1":outputBinary = outputBinary + "01001";break;
@@ -917,6 +825,15 @@ public class Reader {
 				case "$k0":outputBinary = outputBinary + "11010";break;
 				case "$k1":outputBinary = outputBinary + "11011";break;
 			}
+			outputBinary = outputBinary + ShiftAmount;
+			FunctionCode = FunctionCode + "101001";
+			outputBinary = outputBinary + FunctionCode;
+		}
+	}
+	
+	public static void checkAddi(){
+		if(split[0].equals("addi")){
+			outputBinary = outputBinary + "001000";
 			switch(split2[1]){
 				case "$t0":outputBinary = outputBinary + "01000";break;
 				case "$t1":outputBinary = outputBinary + "01001";break;
@@ -946,13 +863,85 @@ public class Reader {
 				case "$k0":outputBinary = outputBinary + "11010";break;
 				case "$k1":outputBinary = outputBinary + "11011";break;
 			}
-			int y = Integer.parseInt(split2[2]);String convert = Integer.toBinaryString(0x10000 | y).substring(1);outputBinary = outputBinary + convert;
+			switch(split2[0]){
+				case "$t0":outputBinary = outputBinary + "01000";break;
+				case "$t1":outputBinary = outputBinary + "01001";break;
+				case "$t2":outputBinary = outputBinary + "01010";break;
+				case "$t3":outputBinary = outputBinary + "01011";break;
+				case "$t4":outputBinary = outputBinary + "01100";break;
+				case "$t5":outputBinary = outputBinary + "01101";break;
+				case "$t6":outputBinary = outputBinary + "01110";break;
+				case "$t7":outputBinary = outputBinary + "01111";break;
+				case "$at":outputBinary = outputBinary + "00001";break;
+				case "$a0":outputBinary = outputBinary + "00100";break;
+				case "$a1":outputBinary = outputBinary + "00101";break;
+				case "$a2":outputBinary = outputBinary + "00110";break;
+				case "$a3":outputBinary = outputBinary + "00111";break;
+				case "$v0":outputBinary = outputBinary + "00010";break;
+				case "$v1":outputBinary = outputBinary + "00011";break;
+				case "$t8":outputBinary = outputBinary + "11000";break;
+				case "$t9":outputBinary = outputBinary + "11001";break;
+				case "$s0":outputBinary = outputBinary + "10000";break;
+				case "$s1":outputBinary = outputBinary + "10001";break;
+				case "$s2":outputBinary = outputBinary + "10010";break;
+				case "$s3":outputBinary = outputBinary + "10011";break;
+				case "$s4":outputBinary = outputBinary + "10100";break;
+				case "$s5":outputBinary = outputBinary + "10101";break;
+				case "$s6":outputBinary = outputBinary + "10110";break;
+				case "$s7":outputBinary = outputBinary + "10111";break;
+				case "$k0":outputBinary = outputBinary + "11010";break;
+				case "$k1":outputBinary = outputBinary + "11011";break;
+			}
+			int number = Integer.parseInt(split2[2]);
+			String constant = Integer.toBinaryString(number);
+			if (number >= 0)
+			{
+				while (constant.length() < 16)
+					constant = "0" + constant;
+			}
+			else
+				constant = constant.substring(16);
+			outputBinary = outputBinary + constant;
 		}
 	}
 	
 	public static void checkLb(){
 		if(split[0].equals("lb")){
 			outputBinary = outputBinary + "100000";
+			String memData[] = split2[1].split("(");
+			int offset = Integer.parseInt(memData[0]);
+			String offsetInBinary = Integer.toBinaryString(offset);
+			memData[1] = memData[1].replace(")", "");
+			switch(memData[1])
+			{
+				case "$t0":outputBinary = outputBinary + "01000";break;
+				case "$t1":outputBinary = outputBinary + "01001";break;
+				case "$t2":outputBinary = outputBinary + "01010";break;
+				case "$t3":outputBinary = outputBinary + "01011";break;
+				case "$t4":outputBinary = outputBinary + "01100";break;
+				case "$t5":outputBinary = outputBinary + "01101";break;
+				case "$t6":outputBinary = outputBinary + "01110";break;
+				case "$t7":outputBinary = outputBinary + "01111";break;
+				case "$at":outputBinary = outputBinary + "00001";break;
+				case "$a0":outputBinary = outputBinary + "00100";break;
+				case "$a1":outputBinary = outputBinary + "00101";break;
+				case "$a2":outputBinary = outputBinary + "00110";break;
+				case "$a3":outputBinary = outputBinary + "00111";break;
+				case "$v0":outputBinary = outputBinary + "00010";break;
+				case "$v1":outputBinary = outputBinary + "00011";break;
+				case "$t8":outputBinary = outputBinary + "11000";break;
+				case "$t9":outputBinary = outputBinary + "11001";break;
+				case "$s0":outputBinary = outputBinary + "10000";break;
+				case "$s1":outputBinary = outputBinary + "10001";break;
+				case "$s2":outputBinary = outputBinary + "10010";break;
+				case "$s3":outputBinary = outputBinary + "10011";break;
+				case "$s4":outputBinary = outputBinary + "10100";break;
+				case "$s5":outputBinary = outputBinary + "10101";break;
+				case "$s6":outputBinary = outputBinary + "10110";break;
+				case "$s7":outputBinary = outputBinary + "10111";break;
+				case "$k0":outputBinary = outputBinary + "11010";break;
+				case "$k1":outputBinary = outputBinary + "11011";break;
+			}
 			switch(split2[0]){
 				case "$t0":outputBinary = outputBinary + "01000";break;
 				case "$t1":outputBinary = outputBinary + "01001";break;
@@ -982,45 +971,54 @@ public class Reader {
 				case "$k0":outputBinary = outputBinary + "11010";break;
 				case "$k1":outputBinary = outputBinary + "11011";break;
 			}
-			v = split2[1].toString().replaceAll("(", " ");
-			v = v.replaceAll(")", "");
-			split3 = v.split("\\s");
-			switch(split3[1]){
-				case "$t0":outputBinary = outputBinary + "01000";break;
-				case "$t1":outputBinary = outputBinary + "01001";break;
-				case "$t2":outputBinary = outputBinary + "01010";break;
-				case "$t3":outputBinary = outputBinary + "01011";break;
-				case "$t4":outputBinary = outputBinary + "01100";break;
-				case "$t5":outputBinary = outputBinary + "01101";break;
-				case "$t6":outputBinary = outputBinary + "01110";break;
-				case "$t7":outputBinary = outputBinary + "01111";break;
-				case "$at":outputBinary = outputBinary + "00001";break;
-				case "$a0":outputBinary = outputBinary + "00100";break;
-				case "$a1":outputBinary = outputBinary + "00101";break;
-				case "$a2":outputBinary = outputBinary + "00110";break;
-				case "$a3":outputBinary = outputBinary + "00111";break;
-				case "$v0":outputBinary = outputBinary + "00010";break;
-				case "$v1":outputBinary = outputBinary + "00011";break;
-				case "$t8":outputBinary = outputBinary + "11000";break;
-				case "$t9":outputBinary = outputBinary + "11001";break;
-				case "$s0":outputBinary = outputBinary + "10000";break;
-				case "$s1":outputBinary = outputBinary + "10001";break;
-				case "$s2":outputBinary = outputBinary + "10010";break;
-				case "$s3":outputBinary = outputBinary + "10011";break;
-				case "$s4":outputBinary = outputBinary + "10100";break;
-				case "$s5":outputBinary = outputBinary + "10101";break;
-				case "$s6":outputBinary = outputBinary + "10110";break;
-				case "$s7":outputBinary = outputBinary + "10111";break;
-				case "$k0":outputBinary = outputBinary + "11010";break;
-				case "$k1":outputBinary = outputBinary + "11011";break;
+			if (offset >= 0)
+			{
+				while (offsetInBinary.length() < 16)
+					offsetInBinary = "0" + offsetInBinary;
 			}
-			t = Integer.parseInt(split3[0]);sheikh = Integer.toBinaryString(0x10000 | t).substring(1);outputBinary = outputBinary + sheikh;
+			else
+				offsetInBinary = offsetInBinary.substring(16);
+			outputBinary += offsetInBinary;
 		}
 	}
 	
 	public static void checkLw(){
 		if(split[0].equals("lw")){
-			outputBinary = outputBinary + "100000";
+			outputBinary = outputBinary + "100011";
+			String memData[] = split2[1].split("(");
+			int offset = Integer.parseInt(memData[0]);
+			String offsetInBinary = Integer.toBinaryString(offset);
+			memData[1] = memData[1].replace(")", "");
+			switch(memData[1])
+			{
+				case "$t0":outputBinary = outputBinary + "01000";break;
+				case "$t1":outputBinary = outputBinary + "01001";break;
+				case "$t2":outputBinary = outputBinary + "01010";break;
+				case "$t3":outputBinary = outputBinary + "01011";break;
+				case "$t4":outputBinary = outputBinary + "01100";break;
+				case "$t5":outputBinary = outputBinary + "01101";break;
+				case "$t6":outputBinary = outputBinary + "01110";break;
+				case "$t7":outputBinary = outputBinary + "01111";break;
+				case "$at":outputBinary = outputBinary + "00001";break;
+				case "$a0":outputBinary = outputBinary + "00100";break;
+				case "$a1":outputBinary = outputBinary + "00101";break;
+				case "$a2":outputBinary = outputBinary + "00110";break;
+				case "$a3":outputBinary = outputBinary + "00111";break;
+				case "$v0":outputBinary = outputBinary + "00010";break;
+				case "$v1":outputBinary = outputBinary + "00011";break;
+				case "$t8":outputBinary = outputBinary + "11000";break;
+				case "$t9":outputBinary = outputBinary + "11001";break;
+				case "$s0":outputBinary = outputBinary + "10000";break;
+				case "$s1":outputBinary = outputBinary + "10001";break;
+				case "$s2":outputBinary = outputBinary + "10010";break;
+				case "$s3":outputBinary = outputBinary + "10011";break;
+				case "$s4":outputBinary = outputBinary + "10100";break;
+				case "$s5":outputBinary = outputBinary + "10101";break;
+				case "$s6":outputBinary = outputBinary + "10110";break;
+				case "$s7":outputBinary = outputBinary + "10111";break;
+				case "$k0":outputBinary = outputBinary + "11010";break;
+				case "$k1":outputBinary = outputBinary + "11011";break;
+			}
 			switch(split2[0]){
 				case "$t0":outputBinary = outputBinary + "01000";break;
 				case "$t1":outputBinary = outputBinary + "01001";break;
@@ -1050,45 +1048,54 @@ public class Reader {
 				case "$k0":outputBinary = outputBinary + "11010";break;
 				case "$k1":outputBinary = outputBinary + "11011";break;
 			}
-			v = split2[1].toString().replaceAll("(", " ");
-			v = v.replaceAll(")", "");
-			split3 = v.split("\\s");
-			switch(split3[1]){
-				case "$t0":outputBinary = outputBinary + "01000";break;
-				case "$t1":outputBinary = outputBinary + "01001";break;
-				case "$t2":outputBinary = outputBinary + "01010";break;
-				case "$t3":outputBinary = outputBinary + "01011";break;
-				case "$t4":outputBinary = outputBinary + "01100";break;
-				case "$t5":outputBinary = outputBinary + "01101";break;
-				case "$t6":outputBinary = outputBinary + "01110";break;
-				case "$t7":outputBinary = outputBinary + "01111";break;
-				case "$at":outputBinary = outputBinary + "00001";break;
-				case "$a0":outputBinary = outputBinary + "00100";break;
-				case "$a1":outputBinary = outputBinary + "00101";break;
-				case "$a2":outputBinary = outputBinary + "00110";break;
-				case "$a3":outputBinary = outputBinary + "00111";break;
-				case "$v0":outputBinary = outputBinary + "00010";break;
-				case "$v1":outputBinary = outputBinary + "00011";break;
-				case "$t8":outputBinary = outputBinary + "11000";break;
-				case "$t9":outputBinary = outputBinary + "11001";break;
-				case "$s0":outputBinary = outputBinary + "10000";break;
-				case "$s1":outputBinary = outputBinary + "10001";break;
-				case "$s2":outputBinary = outputBinary + "10010";break;
-				case "$s3":outputBinary = outputBinary + "10011";break;
-				case "$s4":outputBinary = outputBinary + "10100";break;
-				case "$s5":outputBinary = outputBinary + "10101";break;
-				case "$s6":outputBinary = outputBinary + "10110";break;
-				case "$s7":outputBinary = outputBinary + "10111";break;
-				case "$k0":outputBinary = outputBinary + "11010";break;
-				case "$k1":outputBinary = outputBinary + "11011";break;
+			if (offset >= 0)
+			{
+				while (offsetInBinary.length() < 16)
+					offsetInBinary = "0" + offsetInBinary;
 			}
-			t = Integer.parseInt(split3[0]);sheikh = Integer.toBinaryString(0x10000 | t).substring(1);outputBinary = outputBinary + sheikh;
+			else
+				offsetInBinary = offsetInBinary.substring(16);
+			outputBinary += offsetInBinary;
 		}
 	}
 	
 	public static void checkLbu(){
 		if(split[0].equals("lbu")){
 			outputBinary = outputBinary + "100100";
+			String memData[] = split2[1].split("(");
+			int offset = Integer.parseInt(memData[0]);
+			String offsetInBinary = Integer.toBinaryString(offset);
+			memData[1] = memData[1].replace(")", "");
+			switch(memData[1])
+			{
+				case "$t0":outputBinary = outputBinary + "01000";break;
+				case "$t1":outputBinary = outputBinary + "01001";break;
+				case "$t2":outputBinary = outputBinary + "01010";break;
+				case "$t3":outputBinary = outputBinary + "01011";break;
+				case "$t4":outputBinary = outputBinary + "01100";break;
+				case "$t5":outputBinary = outputBinary + "01101";break;
+				case "$t6":outputBinary = outputBinary + "01110";break;
+				case "$t7":outputBinary = outputBinary + "01111";break;
+				case "$at":outputBinary = outputBinary + "00001";break;
+				case "$a0":outputBinary = outputBinary + "00100";break;
+				case "$a1":outputBinary = outputBinary + "00101";break;
+				case "$a2":outputBinary = outputBinary + "00110";break;
+				case "$a3":outputBinary = outputBinary + "00111";break;
+				case "$v0":outputBinary = outputBinary + "00010";break;
+				case "$v1":outputBinary = outputBinary + "00011";break;
+				case "$t8":outputBinary = outputBinary + "11000";break;
+				case "$t9":outputBinary = outputBinary + "11001";break;
+				case "$s0":outputBinary = outputBinary + "10000";break;
+				case "$s1":outputBinary = outputBinary + "10001";break;
+				case "$s2":outputBinary = outputBinary + "10010";break;
+				case "$s3":outputBinary = outputBinary + "10011";break;
+				case "$s4":outputBinary = outputBinary + "10100";break;
+				case "$s5":outputBinary = outputBinary + "10101";break;
+				case "$s6":outputBinary = outputBinary + "10110";break;
+				case "$s7":outputBinary = outputBinary + "10111";break;
+				case "$k0":outputBinary = outputBinary + "11010";break;
+				case "$k1":outputBinary = outputBinary + "11011";break;
+			}
 			switch(split2[0]){
 				case "$t0":outputBinary = outputBinary + "01000";break;
 				case "$t1":outputBinary = outputBinary + "01001";break;
@@ -1118,45 +1125,49 @@ public class Reader {
 				case "$k0":outputBinary = outputBinary + "11010";break;
 				case "$k1":outputBinary = outputBinary + "11011";break;
 			}
-			v = split2[1].toString().replaceAll("(", " ");
-			v = v.replaceAll(")", "");
-			split3 = v.split("\\s");
-			switch(split3[1]){
-				case "$t0":outputBinary = outputBinary + "01000";break;
-				case "$t1":outputBinary = outputBinary + "01001";break;
-				case "$t2":outputBinary = outputBinary + "01010";break;
-				case "$t3":outputBinary = outputBinary + "01011";break;
-				case "$t4":outputBinary = outputBinary + "01100";break;
-				case "$t5":outputBinary = outputBinary + "01101";break;
-				case "$t6":outputBinary = outputBinary + "01110";break;
-				case "$t7":outputBinary = outputBinary + "01111";break;
-				case "$at":outputBinary = outputBinary + "00001";break;
-				case "$a0":outputBinary = outputBinary + "00100";break;
-				case "$a1":outputBinary = outputBinary + "00101";break;
-				case "$a2":outputBinary = outputBinary + "00110";break;
-				case "$a3":outputBinary = outputBinary + "00111";break;
-				case "$v0":outputBinary = outputBinary + "00010";break;
-				case "$v1":outputBinary = outputBinary + "00011";break;
-				case "$t8":outputBinary = outputBinary + "11000";break;
-				case "$t9":outputBinary = outputBinary + "11001";break;
-				case "$s0":outputBinary = outputBinary + "10000";break;
-				case "$s1":outputBinary = outputBinary + "10001";break;
-				case "$s2":outputBinary = outputBinary + "10010";break;
-				case "$s3":outputBinary = outputBinary + "10011";break;
-				case "$s4":outputBinary = outputBinary + "10100";break;
-				case "$s5":outputBinary = outputBinary + "10101";break;
-				case "$s6":outputBinary = outputBinary + "10110";break;
-				case "$s7":outputBinary = outputBinary + "10111";break;
-				case "$k0":outputBinary = outputBinary + "11010";break;
-				case "$k1":outputBinary = outputBinary + "11011";break;
-			}
-			t = Integer.parseInt(split3[0]);sheikh = Integer.toBinaryString(0x10000 | t).substring(1);outputBinary = outputBinary + sheikh;
+			while (offsetInBinary.length() < 16)
+				offsetInBinary = "0" + offsetInBinary;
+			outputBinary += offsetInBinary;
 		}
 	}
 	
 	public static void checkSw(){
 		if(split[0].equals("sw")){
 			outputBinary = outputBinary + "101011";
+			String memData[] = split2[1].split("(");
+			int offset = Integer.parseInt(memData[0]);
+			String offsetInBinary = Integer.toBinaryString(offset);
+			memData[1] = memData[1].replace(")", "");
+			switch(memData[1])
+			{
+				case "$t0":outputBinary = outputBinary + "01000";break;
+				case "$t1":outputBinary = outputBinary + "01001";break;
+				case "$t2":outputBinary = outputBinary + "01010";break;
+				case "$t3":outputBinary = outputBinary + "01011";break;
+				case "$t4":outputBinary = outputBinary + "01100";break;
+				case "$t5":outputBinary = outputBinary + "01101";break;
+				case "$t6":outputBinary = outputBinary + "01110";break;
+				case "$t7":outputBinary = outputBinary + "01111";break;
+				case "$at":outputBinary = outputBinary + "00001";break;
+				case "$a0":outputBinary = outputBinary + "00100";break;
+				case "$a1":outputBinary = outputBinary + "00101";break;
+				case "$a2":outputBinary = outputBinary + "00110";break;
+				case "$a3":outputBinary = outputBinary + "00111";break;
+				case "$v0":outputBinary = outputBinary + "00010";break;
+				case "$v1":outputBinary = outputBinary + "00011";break;
+				case "$t8":outputBinary = outputBinary + "11000";break;
+				case "$t9":outputBinary = outputBinary + "11001";break;
+				case "$s0":outputBinary = outputBinary + "10000";break;
+				case "$s1":outputBinary = outputBinary + "10001";break;
+				case "$s2":outputBinary = outputBinary + "10010";break;
+				case "$s3":outputBinary = outputBinary + "10011";break;
+				case "$s4":outputBinary = outputBinary + "10100";break;
+				case "$s5":outputBinary = outputBinary + "10101";break;
+				case "$s6":outputBinary = outputBinary + "10110";break;
+				case "$s7":outputBinary = outputBinary + "10111";break;
+				case "$k0":outputBinary = outputBinary + "11010";break;
+				case "$k1":outputBinary = outputBinary + "11011";break;
+			}
 			switch(split2[0]){
 				case "$t0":outputBinary = outputBinary + "01000";break;
 				case "$t1":outputBinary = outputBinary + "01001";break;
@@ -1186,39 +1197,14 @@ public class Reader {
 				case "$k0":outputBinary = outputBinary + "11010";break;
 				case "$k1":outputBinary = outputBinary + "11011";break;
 			}
-			v = split2[1].toString().replaceAll("(", " ");
-			v = v.replaceAll(")", "");
-			split3 = v.split("\\s");
-			switch(split3[1]){
-				case "$t0":outputBinary = outputBinary + "01000";break;
-				case "$t1":outputBinary = outputBinary + "01001";break;
-				case "$t2":outputBinary = outputBinary + "01010";break;
-				case "$t3":outputBinary = outputBinary + "01011";break;
-				case "$t4":outputBinary = outputBinary + "01100";break;
-				case "$t5":outputBinary = outputBinary + "01101";break;
-				case "$t6":outputBinary = outputBinary + "01110";break;
-				case "$t7":outputBinary = outputBinary + "01111";break;
-				case "$at":outputBinary = outputBinary + "00001";break;
-				case "$a0":outputBinary = outputBinary + "00100";break;
-				case "$a1":outputBinary = outputBinary + "00101";break;
-				case "$a2":outputBinary = outputBinary + "00110";break;
-				case "$a3":outputBinary = outputBinary + "00111";break;
-				case "$v0":outputBinary = outputBinary + "00010";break;
-				case "$v1":outputBinary = outputBinary + "00011";break;
-				case "$t8":outputBinary = outputBinary + "11000";break;
-				case "$t9":outputBinary = outputBinary + "11001";break;
-				case "$s0":outputBinary = outputBinary + "10000";break;
-				case "$s1":outputBinary = outputBinary + "10001";break;
-				case "$s2":outputBinary = outputBinary + "10010";break;
-				case "$s3":outputBinary = outputBinary + "10011";break;
-				case "$s4":outputBinary = outputBinary + "10100";break;
-				case "$s5":outputBinary = outputBinary + "10101";break;
-				case "$s6":outputBinary = outputBinary + "10110";break;
-				case "$s7":outputBinary = outputBinary + "10111";break;
-				case "$k0":outputBinary = outputBinary + "11010";break;
-				case "$k1":outputBinary = outputBinary + "11011";break;
+			if (offset >= 0)
+			{
+				while (offsetInBinary.length() < 16)
+					offsetInBinary = "0" + offsetInBinary;
 			}
-			t = Integer.parseInt(split3[0]);sheikh = Integer.toBinaryString(0x10000 | t).substring(1);outputBinary = outputBinary + sheikh;
+			else
+				offsetInBinary = offsetInBinary.substring(16);
+			outputBinary += offsetInBinary;
 		}
 	}
 	
@@ -1226,6 +1212,40 @@ public class Reader {
 	public static void checkSb(){
 		if(split[0].equals("sb")){
 			outputBinary = outputBinary + "101000";
+			String memData[] = split2[1].split("(");
+			int offset = Integer.parseInt(memData[0]);
+			String offsetInBinary = Integer.toBinaryString(offset);
+			memData[1] = memData[1].replace(")", "");
+			switch(memData[1])
+			{
+				case "$t0":outputBinary = outputBinary + "01000";break;
+				case "$t1":outputBinary = outputBinary + "01001";break;
+				case "$t2":outputBinary = outputBinary + "01010";break;
+				case "$t3":outputBinary = outputBinary + "01011";break;
+				case "$t4":outputBinary = outputBinary + "01100";break;
+				case "$t5":outputBinary = outputBinary + "01101";break;
+				case "$t6":outputBinary = outputBinary + "01110";break;
+				case "$t7":outputBinary = outputBinary + "01111";break;
+				case "$at":outputBinary = outputBinary + "00001";break;
+				case "$a0":outputBinary = outputBinary + "00100";break;
+				case "$a1":outputBinary = outputBinary + "00101";break;
+				case "$a2":outputBinary = outputBinary + "00110";break;
+				case "$a3":outputBinary = outputBinary + "00111";break;
+				case "$v0":outputBinary = outputBinary + "00010";break;
+				case "$v1":outputBinary = outputBinary + "00011";break;
+				case "$t8":outputBinary = outputBinary + "11000";break;
+				case "$t9":outputBinary = outputBinary + "11001";break;
+				case "$s0":outputBinary = outputBinary + "10000";break;
+				case "$s1":outputBinary = outputBinary + "10001";break;
+				case "$s2":outputBinary = outputBinary + "10010";break;
+				case "$s3":outputBinary = outputBinary + "10011";break;
+				case "$s4":outputBinary = outputBinary + "10100";break;
+				case "$s5":outputBinary = outputBinary + "10101";break;
+				case "$s6":outputBinary = outputBinary + "10110";break;
+				case "$s7":outputBinary = outputBinary + "10111";break;
+				case "$k0":outputBinary = outputBinary + "11010";break;
+				case "$k1":outputBinary = outputBinary + "11011";break;
+			}
 			switch(split2[0]){
 				case "$t0":outputBinary = outputBinary + "01000";break;
 				case "$t1":outputBinary = outputBinary + "01001";break;
@@ -1255,45 +1275,20 @@ public class Reader {
 				case "$k0":outputBinary = outputBinary + "11010";break;
 				case "$k1":outputBinary = outputBinary + "11011";break;
 			}
-			v = split2[1].toString().replaceAll("(", " ");
-			v = v.replaceAll(")", "");
-			split3 = v.split("\\s");
-			switch(split3[1]){
-				case "$t0":outputBinary = outputBinary + "01000";break;
-				case "$t1":outputBinary = outputBinary + "01001";break;
-				case "$t2":outputBinary = outputBinary + "01010";break;
-				case "$t3":outputBinary = outputBinary + "01011";break;
-				case "$t4":outputBinary = outputBinary + "01100";break;
-				case "$t5":outputBinary = outputBinary + "01101";break;
-				case "$t6":outputBinary = outputBinary + "01110";break;
-				case "$t7":outputBinary = outputBinary + "01111";break;
-				case "$at":outputBinary = outputBinary + "00001";break;
-				case "$a0":outputBinary = outputBinary + "00100";break;
-				case "$a1":outputBinary = outputBinary + "00101";break;
-				case "$a2":outputBinary = outputBinary + "00110";break;
-				case "$a3":outputBinary = outputBinary + "00111";break;
-				case "$v0":outputBinary = outputBinary + "00010";break;
-				case "$v1":outputBinary = outputBinary + "00011";break;
-				case "$t8":outputBinary = outputBinary + "11000";break;
-				case "$t9":outputBinary = outputBinary + "11001";break;
-				case "$s0":outputBinary = outputBinary + "10000";break;
-				case "$s1":outputBinary = outputBinary + "10001";break;
-				case "$s2":outputBinary = outputBinary + "10010";break;
-				case "$s3":outputBinary = outputBinary + "10011";break;
-				case "$s4":outputBinary = outputBinary + "10100";break;
-				case "$s5":outputBinary = outputBinary + "10101";break;
-				case "$s6":outputBinary = outputBinary + "10110";break;
-				case "$s7":outputBinary = outputBinary + "10111";break;
-				case "$k0":outputBinary = outputBinary + "11010";break;
-				case "$k1":outputBinary = outputBinary + "11011";break;
+			if (offset >= 0)
+			{
+				while (offsetInBinary.length() < 16)
+					offsetInBinary = "0" + offsetInBinary;
 			}
-			t = Integer.parseInt(split3[0]);sheikh = Integer.toBinaryString(0x10000 | t).substring(1);outputBinary = outputBinary + sheikh;
+			else
+				offsetInBinary = offsetInBinary.substring(16);
+			outputBinary += offsetInBinary;
 		}
 	}
 	
 	public static void checkLui(){
 		if(split[0].equals("lui")){
-			outputBinary = outputBinary + "001111-----";
+			outputBinary = outputBinary + "00111100000";
 			switch(split2[0]){
 				case "$t0":outputBinary = outputBinary + "01000";break;
 				case "$t1":outputBinary = outputBinary + "01001";break;
@@ -1323,14 +1318,16 @@ public class Reader {
 				case "$k0":outputBinary = outputBinary + "11010";break;
 				case "$k1":outputBinary = outputBinary + "11011";break;
 			}
-			t = Integer.parseInt(split2[1]);sheikh = Integer.toBinaryString(0x10000 | t).substring(1);outputBinary = outputBinary + sheikh;
-		}
-	}
-	
-	public static void checkJ(){
-		if(split[0].equals("j")){
-			outputBinary = outputBinary + "000010";
-			t = Integer.parseInt(split2[0]);sheikh = Integer.toBinaryString(0x1000000 | t).substring(1);outputBinary = outputBinary + sheikh;
+			int number = Integer.parseInt(split2[1]);
+			String constant = Integer.toBinaryString(number);
+			if (number >= 0)
+			{
+				while (constant.length() < 16)
+					constant = "0" + constant;
+			}
+			else
+				constant = constant.substring(16);
+			outputBinary = outputBinary + constant;
 		}
 	}
 	
@@ -1395,7 +1392,18 @@ public class Reader {
 				case "$k0":outputBinary = outputBinary + "11010";break;
 				case "$k1":outputBinary = outputBinary + "11011";break;
 			}
-			t = Integer.parseInt(split2[2]);sheikh = Integer.toBinaryString(0x10000 | t).substring(1);outputBinary = outputBinary + sheikh;
+			int address = Simulator.getLabels().get(split2[2]);
+			int thisInstruction = Simulator.getInstructionMemory().size();
+			int offset = (address - thisInstruction) - 1;
+			String offsetInBinary = Integer.toBinaryString(offset);
+			if (offset >= 0)
+			{
+				while (offsetInBinary.length() < 16)
+					offsetInBinary = "0" + offsetInBinary;
+			}
+			else
+				offsetInBinary = offsetInBinary.substring(16);
+			outputBinary += offsetInBinary;
 		}
 	}
 	
@@ -1460,14 +1468,88 @@ public class Reader {
 				case "$k0":outputBinary = outputBinary + "11010";break;
 				case "$k1":outputBinary = outputBinary + "11011";break;
 			}
-			t = Integer.parseInt(split2[2]);sheikh = Integer.toBinaryString(0x10000 | t).substring(1);outputBinary = outputBinary + sheikh;
+			int address = Simulator.getLabels().get(split2[2]);
+			int thisInstruction = Simulator.getInstructionMemory().size();
+			int offset = (address - thisInstruction) - 1;
+			String offsetInBinary = Integer.toBinaryString(offset);
+			if (offset >= 0)
+			{
+				while (offsetInBinary.length() < 16)
+					offsetInBinary = "0" + offsetInBinary;
+			}
+			else
+				offsetInBinary = offsetInBinary.substring(16);
+			outputBinary += offsetInBinary;
+		}
+	}
+	
+	public static void checkJ(){
+		if(split[0].equals("j")){
+			outputBinary = outputBinary + "000010";
+			int memAddress = Simulator.getLabels().get(split2[0]);
+			memAddress /= 4;
+			String PC = Integer.toBinaryString(Simulator.getPC());
+			while (PC.length() < 32)
+				PC = "0" + PC;
+			String pseudoAddress = Integer.toBinaryString(memAddress);
+			while (pseudoAddress.length() < 22)
+				pseudoAddress = "0" + pseudoAddress;
+			outputBinary += PC.substring(0, 4);
+			outputBinary += pseudoAddress;
+		}
+	}
+	
+	public static void checkJr(){
+		if(split[0].equals("jr")){
+			outputBinary = outputBinary + "000000";
+			switch(split2[0]){
+				case "$t0":outputBinary = outputBinary + "01000";break;
+				case "$t1":outputBinary = outputBinary + "01001";break;
+				case "$t2":outputBinary = outputBinary + "01010";break;
+				case "$t3":outputBinary = outputBinary + "01011";break;
+				case "$t4":outputBinary = outputBinary + "01100";break;
+				case "$t5":outputBinary = outputBinary + "01101";break;
+				case "$t6":outputBinary = outputBinary + "01110";break;
+				case "$t7":outputBinary = outputBinary + "01111";break;
+				case "$at":outputBinary = outputBinary + "00001";break;
+				case "$a0":outputBinary = outputBinary + "00100";break;
+				case "$a1":outputBinary = outputBinary + "00101";break;
+				case "$a2":outputBinary = outputBinary + "00110";break;
+				case "$a3":outputBinary = outputBinary + "00111";break;
+				case "$v0":outputBinary = outputBinary + "00010";break;
+				case "$v1":outputBinary = outputBinary + "00011";break;
+				case "$t8":outputBinary = outputBinary + "11000";break;
+				case "$t9":outputBinary = outputBinary + "11001";break;
+				case "$s0":outputBinary = outputBinary + "10000";break;
+				case "$s1":outputBinary = outputBinary + "10001";break;
+				case "$s2":outputBinary = outputBinary + "10010";break;
+				case "$s3":outputBinary = outputBinary + "10011";break;
+				case "$s4":outputBinary = outputBinary + "10100";break;
+				case "$s5":outputBinary = outputBinary + "10101";break;
+				case "$s6":outputBinary = outputBinary + "10110";break;
+				case "$s7":outputBinary = outputBinary + "10111";break;
+				case "$k0":outputBinary = outputBinary + "11010";break;
+				case "$k1":outputBinary = outputBinary + "11011";break;
+			}
+			outputBinary = outputBinary + "000000000000000";
+			FunctionCode = FunctionCode+"001000";
+			outputBinary = outputBinary + FunctionCode;
 		}
 	}
 	
 	public static void checkJal(){
 		if(split[0].equals("jal")){
 			outputBinary = outputBinary + "000011";
-			t = Integer.parseInt(split2[0]);sheikh = Integer.toBinaryString(0x1000000 | t).substring(1);outputBinary = outputBinary + sheikh;
+			int memAddress = Simulator.getLabels().get(split2[0]);
+			memAddress /= 4;
+			String PC = Integer.toBinaryString(Simulator.getPC());
+			while (PC.length() < 32)
+				PC = "0" + PC;
+			String pseudoAddress = Integer.toBinaryString(memAddress);
+			while (pseudoAddress.length() < 22)
+				pseudoAddress = "0" + pseudoAddress;
+			outputBinary += PC.substring(0, 4);
+			outputBinary += pseudoAddress;
 		}
 	}
 }

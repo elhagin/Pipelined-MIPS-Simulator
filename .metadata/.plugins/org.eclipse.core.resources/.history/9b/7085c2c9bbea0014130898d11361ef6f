@@ -1,0 +1,242 @@
+package memory;
+
+public class CU {
+	private static int Branch;
+	private static int RegDst;
+	private static int MemRead;
+	private static int MemToReg;
+	private static int ALUOp1;
+	private static int ALUOp0;
+	private static int MemWrite;
+	private static int ALUSrc;
+	private static int RegWrite;
+	private static int Jump;
+	
+	public CU(){
+		this.setALUOp1(0);
+		this.setALUSrc(0);
+		this.setBranch(0);
+		this.setMemRead(0);
+		this.setMemToReg(0);
+		this.setMemWrite(0);
+		this.setRegDst(0);
+		this.setRegWrite(0);
+	}
+	
+	public static void inputOpCode(String x){
+		switch(x){
+			case "000000"://R-format //DONE
+				this.setALUOp1(1);
+				this.setALUSrc(0); 
+				this.setBranch(0);
+				this.setMemRead(0);
+				this.setMemToReg(0);
+				this.setMemWrite(0);
+				this.setRegDst(1);
+				this.setRegWrite(1);
+				this.setALUOp0(0);
+				this.setJump(0);
+			case "100000"://lb $
+				this.setALUOp1(0);
+				this.setALUSrc(0);
+				this.setBranch(0);
+				this.setMemRead(0);
+				this.setMemToReg(0);
+				this.setMemWrite(0);
+				this.setRegDst(0);
+				this.setRegWrite(0);
+				this.setALUOp0(0);
+				this.setJump(0);
+			case "001000"://addi //DONE
+				this.setALUOp1(0);
+				this.setALUSrc(1);
+				this.setBranch(0);
+				this.setMemRead(0);
+				this.setMemToReg(0);
+				this.setMemWrite(0);
+				this.setRegDst(0);
+				this.setRegWrite(1);
+				this.setALUOp0(0);
+				this.setJump(0);
+			case "100011"://lw //DONE
+				this.setALUOp1(0);
+				this.setALUSrc(1);
+				this.setBranch(0);
+				this.setMemRead(1);
+				this.setMemToReg(1);
+				this.setMemWrite(0);
+				this.setRegDst(0);
+				this.setRegWrite(1);
+				this.setALUOp0(0);
+				this.setJump(0);
+			case "100100"://lbu $
+				this.setALUOp1(0);
+				this.setALUSrc(0);
+				this.setBranch(0);
+				this.setMemRead(0);
+				this.setMemToReg(0);
+				this.setMemWrite(0);
+				this.setRegDst(0);
+				this.setRegWrite(0);
+				this.setALUOp0(0);
+				this.setJump(0);
+			case "101011"://sw //DONE
+				this.setALUOp1(0);
+				this.setALUSrc(1);
+				this.setBranch(0);
+				this.setMemRead(0);
+				this.setMemToReg(2);
+				this.setMemWrite(1);
+				this.setRegDst(2);
+				this.setRegWrite(0);
+				this.setALUOp0(0);
+				this.setJump(0);
+			case "101000"://sb $
+				this.setALUOp1(0);
+				this.setALUSrc(0);
+				this.setBranch(0);
+				this.setMemRead(0);
+				this.setMemToReg(0);
+				this.setMemWrite(0);
+				this.setRegDst(0);
+				this.setRegWrite(0);
+				this.setALUOp0(0);
+				this.setJump(0);
+			case "001111"://lui $
+				this.setALUOp1(0);
+				this.setALUSrc(0);
+				this.setBranch(0);
+				this.setMemRead(0);
+				this.setMemToReg(0);
+				this.setMemWrite(0);
+				this.setRegDst(0);
+				this.setRegWrite(0);
+				this.setALUOp0(0);
+				this.setJump(0);
+			case "000010"://j //DONE
+				this.setALUOp1(0);
+				this.setALUSrc(2);
+				this.setBranch(0);
+				this.setMemRead(0);
+				this.setMemToReg(2);
+				this.setMemWrite(0);
+				this.setRegDst(2);
+				this.setRegWrite(0);
+				this.setALUOp0(0);
+				this.setJump(1);
+			case "000100"://beq //DONE
+				this.setALUOp1(0);
+				this.setALUSrc(0);
+				this.setBranch(1);
+				this.setMemRead(0);
+				this.setMemToReg(2);
+				this.setMemWrite(0);
+				this.setRegDst(2);
+				this.setRegWrite(0);
+				this.setALUOp0(1);
+				this.setJump(0);
+			case "000101"://bne //DONE but not sure
+				this.setALUOp1(0);
+				this.setALUSrc(0);
+				this.setBranch(1);
+				this.setMemRead(0);
+				this.setMemToReg(2);
+				this.setMemWrite(0);
+				this.setRegDst(2);
+				this.setRegWrite(0);
+				this.setALUOp0(1);
+				this.setJump(0);
+			case "000011"://jal $
+				this.setALUOp1(0);
+				this.setALUSrc(0);
+				this.setBranch(0);
+				this.setMemRead(0);
+				this.setMemToReg(0);
+				this.setMemWrite(0);
+				this.setRegDst(0);
+				this.setRegWrite(0);
+				this.setALUOp0(0);
+				this.setJump(0);
+		}
+	}
+
+	public static int getBranch() {
+		return Branch;
+	}
+
+	public static void setBranch(int branch) {
+		Branch = branch;
+	}
+
+	public static int getRegDst() {
+		return RegDst;
+	}
+
+	public static void setRegDst(int regDst) {
+		RegDst = regDst;
+	}
+
+	public static int getMemRead() {
+		return MemRead;
+	}
+
+	public static void setMemRead(int memRead) {
+		MemRead = memRead;
+	}
+
+	public static int getMemToReg() {
+		return MemToReg;
+	}
+
+	public static void setMemToReg(int memToReg) {
+		MemToReg = memToReg;
+	}
+
+	public static int getALUOp1() {
+		return ALUOp1;
+	}
+
+	public static void setALUOp1(int aLUOp1) {
+		ALUOp1 = aLUOp1;
+	}
+
+	public static int getALUOp0() {
+		return ALUOp0;
+	}
+
+	public static void setALUOp0(int aLUOp0) {
+		ALUOp0 = aLUOp0;
+	}
+
+	public static int getMemWrite() {
+		return MemWrite;
+	}
+
+	public static void setMemWrite(int memWrite) {
+		MemWrite = memWrite;
+	}
+
+	public static int getALUSrc() {
+		return ALUSrc;
+	}
+
+	public static void setALUSrc(int aLUSrc) {
+		ALUSrc = aLUSrc;
+	}
+
+	public static int getRegWrite() {
+		return RegWrite;
+	}
+
+	public static void setRegWrite(int regWrite) {
+		RegWrite = regWrite;
+	}
+
+	public static int getJump() {
+		return Jump;
+	}
+
+	public static void setJump(int jump) {
+		Jump = jump;
+	}
+}

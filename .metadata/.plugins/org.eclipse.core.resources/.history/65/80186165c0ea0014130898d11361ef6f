@@ -1,0 +1,68 @@
+package memory;
+
+import mainUnits.RegisterFile;
+import pipelineRegisters.IDEXReg;
+import pipelineRegisters.IFIDReg;
+private static int memToReg;
+private static int branch;
+private static int aluOp;
+private static int aluSrc;
+private static int regDst;
+private static int regWrite;
+private static int memWrite;
+private static int memRead;
+public class InstructionDecode {
+	private String instruction;
+	private String InstructionCU;
+	private String InstructionReadRegister1;
+	private String InstructionReadRegister2;
+	private String InstructionWriteRegisterBeforeMux;
+	private String InstructionSignExtend;
+
+	public  void action(){
+		instruction = IFIDReg.getInstruction();
+		CU.inputOpCode(instruction.substring(0, 6));
+		IDEXReg.setMemToReg(CU.getMemToReg());
+		IDEXReg.setBranch(CU.getBranch());
+		IDEXReg.setAluOp0(CU.getALUOp0());
+		IDEXReg.setAluOp1(CU.getALUOp1());
+		int rs = RegisterFile.read(instruction.substring(6, 11));
+		int rt = RegisterFile.read(instruction.substring(11, 16));
+		IDEXReg.setRegData1(rs);
+		IDEXReg.setRegData2(rt);
+		IDEXReg.setRd(instruction.substring(16, 21));
+		IDEXReg.setRt(instruction.substring(11, 16));
+		IDEXReg.setImmediateConstant(Integer.parseInt(instruction.substring(16), 2));
+	}
+	public String getInstructionCU() {
+		return InstructionCU;
+	}
+	public void setInstructionCU(String instructionCU) {
+		InstructionCU = instructionCU;
+	}
+	public String getInstructionReadRegister1() {
+		return InstructionReadRegister1;
+	}
+	public void setInstructionReadRegister1(String instructionReadRegister1) {
+		InstructionReadRegister1 = instructionReadRegister1;
+	}
+	public String getInstructionReadRegister2() {
+		return InstructionReadRegister2;
+	}
+	public void setInstructionReadRegister2(String instructionReadRegister2) {
+		InstructionReadRegister2 = instructionReadRegister2;
+	}
+	public String getInstructionWriteRegisterBeforeMux() {
+		return InstructionWriteRegisterBeforeMux;
+	}
+	public void setInstructionWriteRegisterBeforeMux(
+			String instructionWriteRegisterBeforeMux) {
+		InstructionWriteRegisterBeforeMux = instructionWriteRegisterBeforeMux;
+	}
+	public String getInstructionSignExtend() {
+		return InstructionSignExtend;
+	}
+	public void setInstructionSignExtend(String instructionSignExtend) {
+		InstructionSignExtend = instructionSignExtend;
+	}
+}

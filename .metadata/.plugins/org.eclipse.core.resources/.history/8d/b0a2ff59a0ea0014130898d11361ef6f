@@ -1,0 +1,27 @@
+package memory;
+
+import mainUnits.Simulator;
+
+public class InstructionFetch {
+	public InstructionFetch()
+	{}
+	
+	public static void main(String[] args) {
+		System.out.println(Integer.toBinaryString(-4000));
+		System.out.println((int)Long.parseLong("00000000000000001111111111111111", 2));
+	}
+	
+	public String action()
+	{
+		if (Simulator.getInstructionMemory().size() - 1 < Simulator.getPC())
+		{
+			return "program_done";
+		}
+		String currentInstruction = Simulator.getInstructionMemory().get(Simulator.getPC());
+		Simulator.setPC(Simulator.getPC()+1);
+		Simulator.getiFID().setInstruction(currentInstruction);
+		Simulator.getiFID().setPC(Simulator.getPC());
+		return currentInstruction;
+	}
+}
+ 	 	

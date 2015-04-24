@@ -1,0 +1,27 @@
+package stages;
+
+import pipelineRegisters.EXMemReg;
+import pipelineRegisters.IDEXReg;
+
+public class InstructionExecute
+{
+	public void action()
+	{
+		int input2;
+		int regData2 = IDEXReg.getRegData2();
+		int PC = IDEXReg.getPC();
+		String last16 = IDEXReg.getLast16Bits();
+		EXMemReg.setMemToReg(IDEXReg.getMemToReg());
+		EXMemReg.setBranch(IDEXReg.getBranch());
+		EXMemReg.setRegWrite(IDEXReg.getRegWrite());
+		EXMemReg.setMemWrite(IDEXReg.getMemWrite());
+		EXMemReg.setMemRead(IDEXReg.getMemRead());
+		if (IDEXReg.getAluSrc() == 0)
+			input2 = regData2;
+		else
+			input2 = Integer.parseInt(last16, 2);
+		
+		EXMemReg.setRegData2(regData2);
+		EXMemReg.setNewPC(PC + Integer.parseInt(last16, 2));
+	}
+}

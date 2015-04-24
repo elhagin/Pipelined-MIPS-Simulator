@@ -1,0 +1,40 @@
+package pipelineRegisters;
+
+public class EXMemReg {
+	private static int memToReg;
+	private static int branch;
+	private static int regWrite;
+	private static int memWrite;
+	private static int memRead;
+	public static int getMemToReg() {
+		return memToReg;
+	}
+	public static void setMemToReg(int memToReg) {
+		EXMemReg.memToReg = memToReg;
+	}
+	public static int getBranch() {
+		return branch;
+	}
+	public static void setBranch(int branch) {
+		EXMemReg.branch = branch;
+	}
+	public static int getRegWrite() {
+		return regWrite;
+	}
+	public static void setRegWrite(int regWrite) {
+		EXMemReg.regWrite = regWrite;
+	}
+	public static int getMemWrite() {
+		return memWrite;
+	}
+	public static void setMemWrite(int memWrite) {
+		EXMemReg.memWrite = memWrite;
+	}
+	public static int getMemRead() {
+		return memRead;
+	}
+	public static void setMemRead(int memRead) {
+		EXMemReg.memRead = memRead;
+	}
+
+}

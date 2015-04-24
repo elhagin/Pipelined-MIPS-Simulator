@@ -1,22 +1,19 @@
 package pipelineRegisters;
 
 public class IFIDReg {
-	private String instruction;
-	private int PC;
-
-	public String getInstruction() {
+	private static String instruction;
+	private static int PC;
+	
+	public static String getInstruction() {
 		return instruction;
 	}
-
-	public void setInstruction(String instruction) {
-		this.instruction = instruction;
+	public static void setInstruction(String instruction) {
+		IFIDReg.instruction = instruction;
 	}
-
-	public int getPC() {
+	public static int getPC() {
 		return PC;
 	}
-
-	public void setPC(int pC) {
+	public static void setPC(int pC) {
 		PC = pC;
 	}
 }

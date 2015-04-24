@@ -12,3 +12,14 @@
 1429819218279	Rename field 'InstructionMemory'
 1429821015406	Rename type 'IDXReg'
 1429821167930	Rename type 'MemWbReg'
+1429885426194	Rename local variable 'offset'
+1429885673243	Rename local variable 'offset'
+1429885695614	Rename local variable 'offset'
+1429885800756	Rename local variable 'offset'
+1429885872476	Rename local variable 'offset'
+1429890091152	Rename type 'Registers'
+1429900942146	Rename field 'last16Bits'
+1429908833091	Rename package 'memory'
+1429908865484	Move compilation unit
+1429909303615	Delete element
+1429909469315	Encapsulate field 'last16bits'

@@ -1,0 +1,58 @@
+package memory;
+
+import mainUnits.Simulator;
+
+public class InstructionDecode {
+	private String instruction;
+	private String InstructionCU;
+	private String InstructionReadRegister1;
+	private String InstructionReadRegister2;
+	private String InstructionWriteRegisterBeforeMux;
+	private String InstructionSignExtend;
+
+	public  void action(){
+		instruction = Simulator.getInstructionMemory().get(Simulator.getPC()-1);
+		setInstructionCU(instruction.substring(0, 6));
+		if (InstructionCU.equals("000000"))
+		{
+			int rs = Integer.parseInt(instruction.substring(6, 11), 2);
+			int rt = Integer.parseInt(instruction.substring(11, 16), 2);
+			int rd = Integer.parseInt(instruction.substring(16, 21), 2);
+		}
+		else
+		{
+			setInstructionSignExtend(instruction.substring(16, 32));
+		}
+	}
+	public String getInstructionCU() {
+		return InstructionCU;
+	}
+	public void setInstructionCU(String instructionCU) {
+		InstructionCU = instructionCU;
+	}
+	public String getInstructionReadRegister1() {
+		return InstructionReadRegister1;
+	}
+	public void setInstructionReadRegister1(String instructionReadRegister1) {
+		InstructionReadRegister1 = instructionReadRegister1;
+	}
+	public String getInstructionReadRegister2() {
+		return InstructionReadRegister2;
+	}
+	public void setInstructionReadRegister2(String instructionReadRegister2) {
+		InstructionReadRegister2 = instructionReadRegister2;
+	}
+	public String getInstructionWriteRegisterBeforeMux() {
+		return InstructionWriteRegisterBeforeMux;
+	}
+	public void setInstructionWriteRegisterBeforeMux(
+			String instructionWriteRegisterBeforeMux) {
+		InstructionWriteRegisterBeforeMux = instructionWriteRegisterBeforeMux;
+	}
+	public String getInstructionSignExtend() {
+		return InstructionSignExtend;
+	}
+	public void setInstructionSignExtend(String instructionSignExtend) {
+		InstructionSignExtend = instructionSignExtend;
+	}
+}

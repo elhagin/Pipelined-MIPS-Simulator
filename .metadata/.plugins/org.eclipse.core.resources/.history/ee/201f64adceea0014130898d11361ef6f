@@ -1,0 +1,94 @@
+package mainUnits;
+
+public class ALU
+{
+	private static int input1;
+	private static int input2;
+	private static int output;
+	private static int zeroFlag;
+
+	public static String generateControl(String funct, String aluOpControlSignal)
+	{
+		String aluControl = "1000";
+		switch (aluOpControlSignal)
+		{
+		case "00":	aluControl = "0010";
+		break;
+		case "01":	aluControl = "branch";
+		break;
+		case "10": switch (funct)
+				   {
+					   case "011011": aluControl = "1100";
+					   break;
+					   case "100000": aluControl = "0010";
+					   break;
+					   case "100010": aluControl = "0110";
+					   break;
+					   case "100100": aluControl = "0000";
+					   break;
+					   case "100101": aluControl = "0001";
+					   break;
+					   case "101010": aluControl = "0111";
+					   break;
+					   case "000000": aluControl = "0011"; //sll
+					   break;
+				   }
+		break;			
+		}
+
+		return aluControl;
+	}
+
+	public static void executeOperation(String operation)
+	{
+		switch (operation)
+		{
+		case "branch": output = input1 - input2;
+		break;
+		case "0000": output = input1 & input2;
+		break;
+		case "0001": output = input1 | input2;
+		break;
+		case "0010": output = input1 + input2;
+		break;
+		case "0110": output = input1 - input2;
+		break;
+		case "0111": if (input1 < input2) output = 1; else output = 0;
+		break;
+		case "1100": output = ~(input1 | input2);
+		break;
+		}
+	}
+
+	public static int getZeroFlag() {
+		return zeroFlag;
+	}
+
+	public static void setZeroFlag(int zeroFlag) {
+		ALU.zeroFlag = zeroFlag;
+	}
+
+	public static int getInput1() {
+		return input1;
+	}
+
+	public static void setInput1(int input1) {
+		ALU.input1 = input1;
+	}
+
+	public static int getInput2() {
+		return input2;
+	}
+
+	public static void setInput2(int input2) {
+		ALU.input2 = input2;
+	}
+
+	public static int getOutput() {
+		return output;
+	}
+
+	public static void setOutput(int output) {
+		ALU.output = output;
+	}
+}

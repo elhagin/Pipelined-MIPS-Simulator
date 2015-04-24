@@ -1,0 +1,48 @@
+package stages;
+
+import mainUnits.ALU;
+import pipelineRegisters.EXMemReg;
+import pipelineRegisters.IDEXReg;
+
+public class InstructionExecute
+{
+	public void action()
+	{
+		int input2;
+		int regData1 = IDEXReg.getRegData1();
+		int regData2 = IDEXReg.getRegData2();
+		int PC = IDEXReg.getPC();
+		int ALUsrc = IDEXReg.getAluSrc();
+		String aluOp = "" + IDEXReg.getAluOp1() + IDEXReg.getAluOp0();
+		String last16 = IDEXReg.getLast16Bits();
+		int memToReg = IDEXReg.getMemToReg();
+		int branch = IDEXReg.getBranch();
+		int regWrite = IDEXReg.getRegWrite();
+		int memWrite = IDEXReg.getMemWrite();
+		int memRead = IDEXReg.getMemRead();
+		
+		EXMemReg.setMemToReg(memToReg);
+		EXMemReg.setBranch(branch);
+		EXMemReg.setRegWrite(regWrite);
+		EXMemReg.setMemWrite(memWrite);
+		EXMemReg.setMemRead(memRead);
+		
+		if (ALUsrc == 0)
+		{
+			if (last16.substring(26).equals("000000"))
+				input2 = Integer.parseInt(last16.substring(21, 26), 2);
+			else
+				input2 = regData2;
+		}
+		else
+			input2 = Integer.parseInt(last16, 2);
+		
+		EXMemReg.setRegData2(regData2);
+		EXMemReg.setNewPC(PC + Integer.parseInt(last16, 2));
+		ALU.setInput1(regData1);
+		ALU.setInput2(input2);
+		String aluControl = ALU.generateControl(last16.substring(26), aluOp);
+		ALU.executeOperation(aluControl);
+		
+	}
+}

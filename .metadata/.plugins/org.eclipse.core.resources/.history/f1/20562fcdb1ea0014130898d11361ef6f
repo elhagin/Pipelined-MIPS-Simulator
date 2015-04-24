@@ -1,0 +1,87 @@
+package pipelineRegisters;
+
+import mainUnits.Simulator;
+
+public class IDEXReg
+{
+	private int memToReg;
+	private int branch;
+	private int aluOp;
+	private int aluSrc;
+	private int PC;
+	private int regData1;
+	private int regData2;
+	private int immediateConstant;
+	private String instruction;
+	
+	public IDEXReg()
+	{
+		instruction = Simulator.getiFID().getInstruction();
+	}
+	
+	public int getMemToReg() {
+		return memToReg;
+	}
+	public void setMemToReg(int memToReg) {
+		this.memToReg = memToReg;
+	}
+	public int getBranch() {
+		return branch;
+	}
+	public void setBranch(int branch) {
+		this.branch = branch;
+	}
+	public int getAluOp() {
+		return aluOp;
+	}
+	public void setAluOp(int aluOp) {
+		this.aluOp = aluOp;
+	}
+	public int getAluSrc() {
+		return aluSrc;
+	}
+	public void setAluSrc(int aluSrc) {
+		this.aluSrc = aluSrc;
+	}
+
+	public int getPC() {
+		return PC;
+	}
+
+	public void setPC(int pC) {
+		PC = pC;
+	}
+
+	public int getRegData1() {
+		return regData1;
+	}
+
+	public void setRegData1(int regData1) {
+		this.regData1 = regData1;
+	}
+
+	public int getRegData2() {
+		return regData2;
+	}
+
+	public void setRegData2(int regData2) {
+		this.regData2 = regData2;
+	}
+
+	public String getInstruction() {
+		return instruction;
+	}
+
+	public void setInstruction(String instruction) {
+		this.instruction = instruction;
+	}
+
+	public String getImmediateConstant() {
+		return immediateConstant;
+	}
+
+	public void setImmediateConstant(String immediateConstant) {
+		this.immediateConstant = immediateConstant;
+	}
+	
+}

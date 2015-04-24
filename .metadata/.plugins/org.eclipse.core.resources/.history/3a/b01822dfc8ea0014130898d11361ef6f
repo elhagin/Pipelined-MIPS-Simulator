@@ -1,0 +1,9 @@
+package stages;
+
+public class InstructionExecute
+{
+	public void action()
+	{
+		
+	}
+}

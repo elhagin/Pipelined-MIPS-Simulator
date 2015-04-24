@@ -1,0 +1,162 @@
+package memory;
+
+public class CU {
+	private static int Branch;
+	private static int RegDst;
+	private static int MemRead;
+	private static int MemToReg;
+	private static int ALUOp1;
+	private static int ALUOp0;
+	private static int MemWrite;
+	private static int ALUSrc;
+	private static int RegWrite;
+	private static int Jump;
+	
+	public CU(){
+		this.setALUOp1(0);
+		this.setALUSrc(0);
+		this.setBranch(0);
+		this.setMemRead(0);
+		this.setMemToReg(0);
+		this.setMemWrite(0);
+		this.setRegDst(0);
+		this.setRegWrite(0);
+	}
+	
+	public static void inputOpCode(String x){
+		switch(x){
+			case "000000"://R-format //DONE
+				this.setALUOp1(1);
+				this.setALUSrc(0); 
+				this.setBranch(0);
+				this.setMemRead(0);
+				this.setMemToReg(0);
+				this.setMemWrite(0);
+				this.setRegDst(1);
+				this.setRegWrite(1);
+				this.setALUOp0(0);
+				this.setJump(0);
+			case "100000"://lb $
+				this.setALUOp1(0);
+				this.setALUSrc(0);
+				this.setBranch(0);
+				this.setMemRead(0);
+				this.setMemToReg(0);
+				this.setMemWrite(0);
+				this.setRegDst(0);
+				this.setRegWrite(0);
+				this.setALUOp0(0);
+				this.setJump(0);
+			case "001000"://addi //DONE
+				this.setALUOp1(0);
+				this.setALUSrc(1);
+				this.setBranch(0);
+				this.setMemRead(0);
+				this.setMemToReg(0);
+				this.setMemWrite(0);
+				this.setRegDst(0);
+				this.setRegWrite(1);
+				this.setALUOp0(0);
+				this.setJump(0);
+			case "100011"://lw //DONE
+				this.setALUOp1(0);
+				this.setALUSrc(1);
+				this.setBranch(0);
+				this.setMemRead(1);
+				this.setMemToReg(1);
+				this.setMemWrite(0);
+				this.setRegDst(0);
+				this.setRegWrite(1);
+				this.setALUOp0(0);
+				this.setJump(0);
+			case "100100"://lbu $
+				this.setALUOp1(0);
+				this.setALUSrc(0);
+				this.setBranch(0);
+				this.setMemRead(0);
+				this.setMemToReg(0);
+				this.setMemWrite(0);
+				this.setRegDst(0);
+				this.setRegWrite(0);
+				this.setALUOp0(0);
+				this.setJump(0);
+			case "101011"://sw //DONE
+				this.setALUOp1(0);
+				this.setALUSrc(1);
+				this.setBranch(0);
+				this.setMemRead(0);
+				this.setMemToReg(2);
+				this.setMemWrite(1);
+				this.setRegDst(2);
+				this.setRegWrite(0);
+				this.setALUOp0(0);
+				this.setJump(0);
+			case "101000"://sb $
+				this.setALUOp1(0);
+				this.setALUSrc(0);
+				this.setBranch(0);
+				this.setMemRead(0);
+				this.setMemToReg(0);
+				this.setMemWrite(0);
+				this.setRegDst(0);
+				this.setRegWrite(0);
+				this.setALUOp0(0);
+				this.setJump(0);
+			case "001111"://lui $
+				this.setALUOp1(0);
+				this.setALUSrc(0);
+				this.setBranch(0);
+				this.setMemRead(0);
+				this.setMemToReg(0);
+				this.setMemWrite(0);
+				this.setRegDst(0);
+				this.setRegWrite(0);
+				this.setALUOp0(0);
+				this.setJump(0);
+			case "000010"://j //DONE
+				this.setALUOp1(0);
+				this.setALUSrc(2);
+				this.setBranch(0);
+				this.setMemRead(0);
+				this.setMemToReg(2);
+				this.setMemWrite(0);
+				this.setRegDst(2);
+				this.setRegWrite(0);
+				this.setALUOp0(0);
+				this.setJump(1);
+			case "000100"://beq //DONE
+				this.setALUOp1(0);
+				this.setALUSrc(0);
+				this.setBranch(1);
+				this.setMemRead(0);
+				this.setMemToReg(2);
+				this.setMemWrite(0);
+				this.setRegDst(2);
+				this.setRegWrite(0);
+				this.setALUOp0(1);
+				this.setJump(0);
+			case "000101"://bne //DONE but not sure
+				this.setALUOp1(0);
+				this.setALUSrc(0);
+				this.setBranch(1);
+				this.setMemRead(0);
+				this.setMemToReg(2);
+				this.setMemWrite(0);
+				this.setRegDst(2);
+				this.setRegWrite(0);
+				this.setALUOp0(1);
+				this.setJump(0);
+			case "000011"://jal $
+				this.setALUOp1(0);
+				this.setALUSrc(0);
+				this.setBranch(0);
+				this.setMemRead(0);
+				this.setMemToReg(0);
+				this.setMemWrite(0);
+				this.setRegDst(0);
+				this.setRegWrite(0);
+				this.setALUOp0(0);
+				this.setJump(0);
+		}
+	}
+}
