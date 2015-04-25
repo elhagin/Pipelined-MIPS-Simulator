@@ -89,8 +89,8 @@ public class GUI extends JFrame implements MouseListener, ActionListener{
 			 System.out.println(RegisterFile.getT2());
 			 //this.getContentPane().add(SimulatorPanel, BorderLayout.EAST);
 			 Simulatorpanel( this.SimulatorPanel );
-			this.validate();
-			this.repaint();
+			 SimulatorPanel.validate();
+			 SimulatorPanel.repaint();
 		}else{
 			this.openfile1 = false;
 			this.filename = "";
