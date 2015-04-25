@@ -17,11 +17,15 @@ import stages.WriteBack;
 
 public class Simulator {
 	private static int PC;
-	private static InstructionFetch fetchStage = new InstructionFetch();
-	private static InstructionDecode decodeStage = new InstructionDecode();
-	private static InstructionExecute executeStage = new InstructionExecute();
-	private static DataMemory memoryStage = new DataMemory();
-	private static WriteBack wbStage = new WriteBack();
+	private static Thread fetchStage = new Thread(new InstructionFetch());
+	private static Thread decodeStage = new Thread(new InstructionDecode());
+	private static Thread executeStage = new Thread(new InstructionExecute());
+	private static Thread memoryStage = new Thread(new DataMemory());
+	private static Thread wbStage = new Thread(new WriteBack());
+	private static ResettableCountDownLatch latch1 = new ResettableCountDownLatch(0);
+	private static ResettableCountDownLatch latch2 = new ResettableCountDownLatch(0);
+	private static ResettableCountDownLatch latch3 = new ResettableCountDownLatch(0);
+	private static ResettableCountDownLatch latch4 = new ResettableCountDownLatch(0);
 	private static String[] dataMemory;
 	private static String[] instructionMemory;
 	private static CU controlUnit;
@@ -32,8 +36,9 @@ public class Simulator {
 	private static IDEXReg iDEX;
 	private static EXMemReg eXMem;
 	private static MemWBReg memWB;
-	private static int i = 0;
+	private static int instructions = 0;
 	private static int memoryPointer = 0;
+	private static int clock = 1;
 	
 	public static int getPC() {
 		return PC;
@@ -51,7 +56,7 @@ public class Simulator {
 		Simulator.r = r;
 	}
 
-	public Simulator() throws IOException{
+	public Simulator() throws IOException, InterruptedException{
 		PC = 0;
 		iFID = new IFIDReg();
 		iDEX = new IDEXReg();
@@ -64,21 +69,74 @@ public class Simulator {
 		controlUnit = new CU();
 		r = new Reader();
 		addInstructionsCodeToMemory();
-		for (int i = 0; i < 3; i++)
+		
+		fetchStage.start();
+		clock++;
+		
+		while(fetchStage.isAlive());
+		latch1 = new ResettableCountDownLatch(1);
+		decodeStage.start();
+		fetchStage = new Thread(new InstructionFetch());
+		fetchStage.start();
+		clock++;
+		
+		while(decodeStage.isAlive() || fetchStage.isAlive());
+		latch2 = new ResettableCountDownLatch(1);
+		executeStage.start();
+		decodeStage = new Thread(new InstructionDecode());
+		decodeStage.start();
+		fetchStage = new Thread(new InstructionFetch());
+		fetchStage.start();
+		clock++;
+		
+		while(executeStage.isAlive() || decodeStage.isAlive() || fetchStage.isAlive());
+		latch3 = new ResettableCountDownLatch(1);
+		memoryStage.start();
+		executeStage = new Thread(new InstructionExecute());
+		executeStage.start();
+		decodeStage = new Thread(new InstructionDecode());
+		decodeStage.start();
+		fetchStage = new Thread(new InstructionFetch());
+		fetchStage.start();
+		clock++;
+		
+		while(memoryStage.isAlive() || executeStage.isAlive() || decodeStage.isAlive() || fetchStage.isAlive());
+		latch4 = new ResettableCountDownLatch(1);
+		wbStage.start();
+		memoryStage = new Thread(new DataMemory());
+		memoryStage.start();
+		executeStage = new Thread(new InstructionExecute());
+		executeStage.start();
+		decodeStage = new Thread(new InstructionDecode());
+		decodeStage.start();
+		fetchStage = new Thread(new InstructionFetch());
+		fetchStage.start();
+		
+		for (int i = 0; i < instructions - 1; i++)
 		{
-			fetchStage.action();
-			decodeStage.action();
-			executeStage.action();
-			memoryStage.action();
-			wbStage.action();
+			while(wbStage.isAlive() || memoryStage.isAlive() || executeStage.isAlive() || decodeStage.isAlive() || fetchStage.isAlive());
+			wbStage = new Thread(new WriteBack());
+			wbStage.start();
+			memoryStage = new Thread(new DataMemory());
+			memoryStage.start();
+			executeStage = new Thread(new InstructionExecute());
+			executeStage.start();
+			decodeStage = new Thread(new InstructionDecode());
+			decodeStage.start();
+			fetchStage = new Thread(new InstructionFetch());
+			fetchStage.start();
 		}
 	}
 	
-	public static void main(String[]args) throws IOException{
+	public static void main(String[]args) throws IOException, InterruptedException{
 		new Simulator();
 		System.out.println(RegisterFile.getT0());
 		System.out.println(RegisterFile.getT1());
 		System.out.println(RegisterFile.getT2());
+		System.out.println(RegisterFile.getT3());
+		System.out.println(RegisterFile.getT4());
+		System.out.println(RegisterFile.getT5());
+		System.out.println(dataMemory[0]);
 	}
 	
 	public static void addInstructionsCodeToMemory() throws IOException{
@@ -90,30 +148,14 @@ public class Simulator {
 			String encoding = r.encodeCode(line);
 			if (!encoding.equals("nodata"))
 			{
-				instructionMemory[i] = encoding;
-				i++;
+				instructionMemory[instructions] = encoding;
+				instructions++;
 			}
 		}
-		instructionMemory[i] = "DONE";
+		instructionMemory[instructions] = "DONE";
 		bufferedReader.close();		
 	}
-
-	public static InstructionFetch getFetchUnit() {
-		return fetchStage;
-	}
-
-	public static void setFetchUnit(InstructionFetch fetchUnit) {
-		Simulator.fetchStage = fetchUnit;
-	}
-
-	public static InstructionDecode getDecodeUnit() {
-		return decodeStage;
-	}
-
-	public static void setDecodeUnit(InstructionDecode decodeUnit) {
-		Simulator.decodeStage = decodeUnit;
-	}
-
+	
 	public static CU getControlUnit() {
 		return controlUnit;
 	}
@@ -187,11 +229,11 @@ public class Simulator {
 	}
 
 	public static int getI() {
-		return i;
+		return instructions;
 	}
 
 	public static void setI(int i) {
-		Simulator.i = i;
+		Simulator.instructions = i;
 	}
 
 	public static int getMemoryPointer() {
@@ -202,43 +244,83 @@ public class Simulator {
 		Simulator.memoryPointer = memoryPointer;
 	}
 
-	public static InstructionFetch getFetchStage() {
+	public static ResettableCountDownLatch getLatch1() {
+		return latch1;
+	}
+
+	public static ResettableCountDownLatch getLatch2() {
+		return latch2;
+	}
+
+	public static ResettableCountDownLatch getLatch3() {
+		return latch3;
+	}
+
+	public static ResettableCountDownLatch getLatch4() {
+		return latch4;
+	}
+
+	public static Thread getFetchStage() {
 		return fetchStage;
 	}
 
-	public static void setFetchStage(InstructionFetch fetchStage) {
+	public static void setFetchStage(Thread fetchStage) {
 		Simulator.fetchStage = fetchStage;
 	}
 
-	public static InstructionDecode getDecodeStage() {
+	public static Thread getDecodeStage() {
 		return decodeStage;
 	}
 
-	public static void setDecodeStage(InstructionDecode decodeStage) {
+	public static void setDecodeStage(Thread decodeStage) {
 		Simulator.decodeStage = decodeStage;
 	}
 
-	public static InstructionExecute getExecuteStage() {
+	public static Thread getExecuteStage() {
 		return executeStage;
 	}
 
-	public static void setExecuteStage(InstructionExecute executeStage) {
+	public static void setExecuteStage(Thread executeStage) {
 		Simulator.executeStage = executeStage;
 	}
 
-	public static DataMemory getMemoryStage() {
+	public static Thread getMemoryStage() {
 		return memoryStage;
 	}
 
-	public static void setMemoryStage(DataMemory memoryStage) {
+	public static void setMemoryStage(Thread memoryStage) {
 		Simulator.memoryStage = memoryStage;
 	}
 
-	public static WriteBack getWbStage() {
+	public static Thread getWbStage() {
 		return wbStage;
 	}
 
-	public static void setWbStage(WriteBack wbStage) {
+	public static void setWbStage(Thread wbStage) {
 		Simulator.wbStage = wbStage;
+	}
+
+	public static int getClock() {
+		return clock;
+	}
+
+	public static void setClock(int clock) {
+		Simulator.clock = clock;
+	}
+
+	public static void setLatch1(ResettableCountDownLatch latch1) {
+		Simulator.latch1 = latch1;
+	}
+
+	public static void setLatch2(ResettableCountDownLatch latch2) {
+		Simulator.latch2 = latch2;
+	}
+
+	public static void setLatch3(ResettableCountDownLatch latch3) {
+		Simulator.latch3 = latch3;
+	}
+
+	public static void setLatch4(ResettableCountDownLatch latch4) {
+		Simulator.latch4 = latch4;
 	}
 }

@@ -41,7 +41,7 @@ public class CU {
 				setALUOp1(0);
 				setALUSrc(0);
 				setBranch(0);
-				setMemRead(0);
+				setMemRead(1);
 				setMemToReg(0);
 				setMemWrite(0);
 				setRegDst(0);
@@ -66,7 +66,7 @@ public class CU {
 				setALUSrc(1);
 				setBranch(0);
 				setMemRead(1);
-				setMemToReg(1);
+				setMemToReg(0);
 				setMemWrite(0);
 				setRegDst(0);
 				setRegWrite(1);

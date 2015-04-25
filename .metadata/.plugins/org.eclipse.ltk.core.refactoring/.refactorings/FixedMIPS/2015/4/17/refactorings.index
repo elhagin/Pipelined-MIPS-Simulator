@@ -26,3 +26,5 @@
 1429960397541	Encapsulate field 'memoryData'
 1429963109389	Rename field 'fetchUnit'
 1429963112454	Rename field 'decodeUnit'
+1429970307240	Move compilation unit
+1429974011652	Rename field 'i'

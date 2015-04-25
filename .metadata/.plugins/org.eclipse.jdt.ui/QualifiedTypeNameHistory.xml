@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="java.util.HashMap"/>
-<fullyQualifiedTypeName name="mainUnits.Simulator"/>
-<fullyQualifiedTypeName name="mainUnits.RegisterFile"/>
 <fullyQualifiedTypeName name="java.lang.Thread"/>
 <fullyQualifiedTypeName name="pipelineRegisters.IFIDReg"/>
-<fullyQualifiedTypeName name="pipelineRegisters.EXMemReg"/>
 <fullyQualifiedTypeName name="pipelineRegisters.IDEXReg"/>
 <fullyQualifiedTypeName name="mainUnits.ALU"/>
+<fullyQualifiedTypeName name="pipelineRegisters.EXMemReg"/>
+<fullyQualifiedTypeName name="pipelineRegisters.MemWBReg"/>
+<fullyQualifiedTypeName name="mainUnits.RegisterFile"/>
+<fullyQualifiedTypeName name="stages.InstructionFetch"/>
+<fullyQualifiedTypeName name="stages.InstructionDecode"/>
+<fullyQualifiedTypeName name="stages.InstructionExecute"/>
+<fullyQualifiedTypeName name="stages.DataMemory"/>
+<fullyQualifiedTypeName name="stages.WriteBack"/>
+<fullyQualifiedTypeName name="java.util.concurrent.CountDownLatch"/>
+<fullyQualifiedTypeName name="mainUnits.ResettableCountDownLatch"/>
+<fullyQualifiedTypeName name="mainUnits.Simulator"/>
 </qualifiedTypeNameHistroy>

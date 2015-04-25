@@ -1,0 +1,6 @@
+.data
+fib: 12
+.text
+addi $t0, $t0, 0
+lw $t1, 0($t0)
+sw $t1, 0($t0)

@@ -1,0 +1,18 @@
+package stages;
+
+import pipelineRegisters.IFIDReg;
+import mainUnits.Simulator;
+
+public class InstructionFetch {	
+	
+	public void action()
+	{
+		String currentInstruction = Simulator.getInstructionMemory()[Simulator.getPC()];
+		if (currentInstruction.equals("DONE"))
+			return;
+		Simulator.setPC(Simulator.getPC()+1);
+		IFIDReg.setInstruction(currentInstruction);
+		IFIDReg.setPC(Simulator.getPC());
+	}
+}
+ 	 	

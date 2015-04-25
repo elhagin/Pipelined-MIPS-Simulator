@@ -911,7 +911,7 @@ public class Reader {
 	public static void checkLb(){
 		if(split[0].equals("lb")){
 			outputBinary = outputBinary + "100000";
-			String memData[] = split2[1].split("(");
+			String memData[] = split2[1].split("\\(");
 			int offset = Integer.parseInt(memData[0]);
 			String offsetInBinary = Integer.toBinaryString(offset);
 			memData[1] = memData[1].replace(")", "");
@@ -988,7 +988,7 @@ public class Reader {
 	public static void checkLw(){
 		if(split[0].equals("lw")){
 			outputBinary = outputBinary + "100011";
-			String memData[] = split2[1].split("(");
+			String memData[] = split2[1].split("\\(");
 			int offset = Integer.parseInt(memData[0]);
 			String offsetInBinary = Integer.toBinaryString(offset);
 			memData[1] = memData[1].replace(")", "");
@@ -1065,7 +1065,7 @@ public class Reader {
 	public static void checkLbu(){
 		if(split[0].equals("lbu")){
 			outputBinary = outputBinary + "100100";
-			String memData[] = split2[1].split("(");
+			String memData[] = split2[1].split("\\(");
 			int offset = Integer.parseInt(memData[0]);
 			String offsetInBinary = Integer.toBinaryString(offset);
 			memData[1] = memData[1].replace(")", "");
@@ -1137,7 +1137,7 @@ public class Reader {
 	public static void checkSw(){
 		if(split[0].equals("sw")){
 			outputBinary = outputBinary + "101011";
-			String memData[] = split2[1].split("(");
+			String memData[] = split2[1].split("\\(");
 			int offset = Integer.parseInt(memData[0]);
 			String offsetInBinary = Integer.toBinaryString(offset);
 			memData[1] = memData[1].replace(")", "");
@@ -1215,7 +1215,7 @@ public class Reader {
 	public static void checkSb(){
 		if(split[0].equals("sb")){
 			outputBinary = outputBinary + "101000";
-			String memData[] = split2[1].split("(");
+			String memData[] = split2[1].split("\\(");
 			int offset = Integer.parseInt(memData[0]);
 			String offsetInBinary = Integer.toBinaryString(offset);
 			memData[1] = memData[1].replace(")", "");

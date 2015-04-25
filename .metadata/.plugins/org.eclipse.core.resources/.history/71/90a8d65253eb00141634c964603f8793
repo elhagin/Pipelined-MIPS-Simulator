@@ -1,0 +1,44 @@
+package stages;
+
+import mainUnits.RegisterFile;
+import mainUnits.Simulator;
+import pipelineRegisters.MemWBReg;
+
+public class WriteBack implements Runnable
+{
+	public void run()
+	{
+		for (int i = 0; i < Simulator.getI(); i++)
+		{
+			int aluResult;
+			String destinationReg;
+			String memoryData;
+			int memToReg;
+			int regWrite;
+			int data;
+			synchronized(MemWBReg.class)
+			{
+				try {
+					Simulator.getLatch4().await();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				aluResult = MemWBReg.getAluResult();
+				destinationReg = MemWBReg.getDestinationReg();
+				memoryData = MemWBReg.getMemoryData();
+				memToReg = MemWBReg.getMemToReg();
+				regWrite = MemWBReg.getRegWrite();
+			}
+
+			if (memToReg == 0)
+				data = Integer.parseInt(memoryData, 2);
+			else
+				data = aluResult;
+
+			if (regWrite == 1)
+			{
+				RegisterFile.write(destinationReg, data);
+			}
+		}
+	}
+}

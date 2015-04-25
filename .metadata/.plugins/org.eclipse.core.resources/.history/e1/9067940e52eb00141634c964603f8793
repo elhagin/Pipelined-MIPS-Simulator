@@ -1,0 +1,266 @@
+package mainUnits;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.concurrent.CountDownLatch;
+
+import pipelineRegisters.EXMemReg;
+import pipelineRegisters.IDEXReg;
+import pipelineRegisters.IFIDReg;
+import pipelineRegisters.MemWBReg;
+import stages.DataMemory;
+import stages.InstructionDecode;
+import stages.InstructionExecute;
+import stages.InstructionFetch;
+import stages.WriteBack;
+
+public class Simulator {
+	private static int PC;
+	private static InstructionFetch fetchStage = new InstructionFetch();
+	private static InstructionDecode decodeStage = new InstructionDecode();
+	private static InstructionExecute executeStage = new InstructionExecute();
+	private static DataMemory memoryStage = new DataMemory();
+	private static WriteBack wbStage = new WriteBack();
+	private static CountDownLatch latch1 = new CountDownLatch(1);
+	private static CountDownLatch latch2 = new CountDownLatch(1);
+	private static CountDownLatch latch3 = new CountDownLatch(1);
+	private static CountDownLatch latch4 = new CountDownLatch(1);
+	private static String[] dataMemory;
+	private static String[] instructionMemory;
+	private static CU controlUnit;
+	private static Reader r;
+	private static HashMap<String, Integer> labels;
+	private static HashMap<String, Integer> declarations;
+	private static IFIDReg iFID;
+	private static IDEXReg iDEX;
+	private static EXMemReg eXMem;
+	private static MemWBReg memWB;
+	private static int i = 0;
+	private static int memoryPointer = 0;
+	
+	public static int getPC() {
+		return PC;
+	}
+
+	public static void setPC(int pC) {
+		Simulator.PC = pC;
+	}
+
+	public static Reader getR() {
+		return r;
+	}
+
+	public static void setR(Reader r) {
+		Simulator.r = r;
+	}
+
+	public Simulator() throws IOException, InterruptedException{
+		PC = 0;
+		iFID = new IFIDReg();
+		iDEX = new IDEXReg();
+		eXMem = new EXMemReg();
+		memWB = new MemWBReg();
+		dataMemory = new String[4096];
+		instructionMemory = new String[4096];
+		labels = new HashMap<String, Integer>();
+		declarations = new HashMap<String, Integer>();
+		controlUnit = new CU();
+		r = new Reader();
+		addInstructionsCodeToMemory();
+		for (int i = 0; i < Simulator.getI(); i++)
+		{
+			fetchStage.run();
+			decodeStage.run();
+			executeStage.run();
+			memoryStage.run();
+			wbStage.run();
+		}
+	}
+	
+	public static void main(String[]args) throws IOException, InterruptedException{
+		new Simulator();
+		System.out.println(RegisterFile.getT0());
+		System.out.println(RegisterFile.getT1());
+		System.out.println(RegisterFile.getT2());
+		System.out.println(dataMemory[0]);
+	}
+	
+	public static void addInstructionsCodeToMemory() throws IOException{
+		FileReader fileReader = new FileReader("program.txt");
+		BufferedReader bufferedReader = new BufferedReader(fileReader);
+		String line;
+		while ((line = bufferedReader.readLine()) != null)
+		{
+			String encoding = r.encodeCode(line);
+			if (!encoding.equals("nodata"))
+			{
+				instructionMemory[i] = encoding;
+				i++;
+			}
+		}
+		instructionMemory[i] = "DONE";
+		bufferedReader.close();		
+	}
+
+	public static InstructionFetch getFetchUnit() {
+		return fetchStage;
+	}
+
+	public static void setFetchUnit(InstructionFetch fetchUnit) {
+		Simulator.fetchStage = fetchUnit;
+	}
+
+	public static InstructionDecode getDecodeUnit() {
+		return decodeStage;
+	}
+
+	public static void setDecodeUnit(InstructionDecode decodeUnit) {
+		Simulator.decodeStage = decodeUnit;
+	}
+
+	public static CU getControlUnit() {
+		return controlUnit;
+	}
+
+	public static void setControlUnit(CU controlUnit) {
+		Simulator.controlUnit = controlUnit;
+	}
+
+	public static HashMap<String, Integer> getLabels() {
+		return labels;
+	}
+
+	public static void setLabels(HashMap<String, Integer> labels) {
+		Simulator.labels = labels;
+	}
+
+	public static HashMap<String, Integer> getDeclarations() {
+		return declarations;
+	}
+
+	public static void setDeclarations(HashMap<String, Integer> declarations) {
+		Simulator.declarations = declarations;
+	}
+
+	public static IDEXReg getiDEX() {
+		return iDEX;
+	}
+
+	public static void setiDEX(IDEXReg iDEX) {
+		Simulator.iDEX = iDEX;
+	}
+
+	public static IFIDReg getiFID() {
+		return iFID;
+	}
+
+	public static void setiFID(IFIDReg iFID) {
+		Simulator.iFID = iFID;
+	}
+
+	public static EXMemReg geteXMem() {
+		return eXMem;
+	}
+
+	public static void seteXMem(EXMemReg eXMem) {
+		Simulator.eXMem = eXMem;
+	}
+
+	public static MemWBReg getMemWB() {
+		return memWB;
+	}
+
+	public static void setMemWB(MemWBReg memWB) {
+		Simulator.memWB = memWB;
+	}
+
+	public static String[] getDataMemory() {
+		return dataMemory;
+	}
+
+	public static void setDataMemory(String[] dataMemory) {
+		Simulator.dataMemory = dataMemory;
+	}
+
+	public static String[] getInstructionMemory() {
+		return instructionMemory;
+	}
+
+	public static void setInstructionMemory(String[] instructionMemory) {
+		Simulator.instructionMemory = instructionMemory;
+	}
+
+	public static int getI() {
+		return i;
+	}
+
+	public static void setI(int i) {
+		Simulator.i = i;
+	}
+
+	public static int getMemoryPointer() {
+		return memoryPointer;
+	}
+
+	public static void setMemoryPointer(int memoryPointer) {
+		Simulator.memoryPointer = memoryPointer;
+	}
+
+	public static InstructionFetch getFetchStage() {
+		return fetchStage;
+	}
+
+	public static void setFetchStage(InstructionFetch fetchStage) {
+		Simulator.fetchStage = fetchStage;
+	}
+
+	public static InstructionDecode getDecodeStage() {
+		return decodeStage;
+	}
+
+	public static void setDecodeStage(InstructionDecode decodeStage) {
+		Simulator.decodeStage = decodeStage;
+	}
+
+	public static InstructionExecute getExecuteStage() {
+		return executeStage;
+	}
+
+	public static void setExecuteStage(InstructionExecute executeStage) {
+		Simulator.executeStage = executeStage;
+	}
+
+	public static DataMemory getMemoryStage() {
+		return memoryStage;
+	}
+
+	public static void setMemoryStage(DataMemory memoryStage) {
+		Simulator.memoryStage = memoryStage;
+	}
+
+	public static WriteBack getWbStage() {
+		return wbStage;
+	}
+
+	public static void setWbStage(WriteBack wbStage) {
+		Simulator.wbStage = wbStage;
+	}
+
+	public static CountDownLatch getLatch1() {
+		return latch1;
+	}
+
+	public static CountDownLatch getLatch2() {
+		return latch2;
+	}
+
+	public static CountDownLatch getLatch3() {
+		return latch3;
+	}
+
+	public static CountDownLatch getLatch4() {
+		return latch4;
+	}
+}
