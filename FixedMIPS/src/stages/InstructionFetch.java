@@ -7,11 +7,9 @@ public class InstructionFetch {
 	
 	public static void action()
 	{
-		if (Simulator.getInstructionMemory().size() - 1 < Simulator.getPC())
-		{
+		String currentInstruction = Simulator.getInstructionMemory()[Simulator.getPC()];
+		if (currentInstruction.equals("DONE"))
 			return;
-		}
-		String currentInstruction = Simulator.getInstructionMemory().get(Simulator.getPC());
 		Simulator.setPC(Simulator.getPC()+1);
 		IFIDReg.setInstruction(currentInstruction);
 		IFIDReg.setPC(Simulator.getPC());

@@ -1,29 +1,43 @@
 package stages;
 
-import mainUnits.CU;
 import mainUnits.Simulator;
+import pipelineRegisters.EXMemReg;
+import pipelineRegisters.MemWBReg;
 
 public class DataMemory {
-	private String OutputReadData;
-     public DataMemory(){
-    	 OutputReadData = "";
-     }
-     public String ReadDataFromMemory(int x){
-    	 return Simulator.getDataMemory().get(x);
-     }
-     public void action(int InputAddress, String InputWriteData){
-    	 if(CU.getMemWrite() == 1)
-    	    Simulator.getDataMemory().set(InputAddress,InputWriteData);
-    	 else{
-    		 if(CU.getMemRead() == 1)
-    		    this.OutputReadData = ReadDataFromMemory(InputAddress);
+
+     public void action()
+     {
+    	 int regWrite = EXMemReg.getRegWrite();
+    	 int zeroFlag = EXMemReg.getZeroFlag();
+    	 int branch = EXMemReg.getBranch();
+    	 int memWrite = EXMemReg.getMemWrite();
+    	 int memRead = EXMemReg.getMemRead();
+    	 int aluResult = EXMemReg.getAluResult();
+    	 int regData2 = EXMemReg.getRegData2();
+    	 int memToReg = EXMemReg.getMemToReg();
+    	 String destinationReg = EXMemReg.getDestinationReg();
+    	 int newPC = EXMemReg.getNewPC();
+    	 
+    	 if ((branch & zeroFlag) == 1)
+    		 Simulator.setPC(newPC);
+    	 String readData = "";
+    	 if (memWrite == 1)
+    	 {
+    		 String data = Integer.toBinaryString(regData2);
+    		 while (data.length() < 32)
+    			 data = "0" + data;
+    		 Simulator.getDataMemory()[aluResult] = data;
     	 }
-     }
-	public String getOutputReadData() {
-		return OutputReadData;
-	}
-	public void setOutputReadData(String outputReadData) {
-		OutputReadData = outputReadData;
-	}
-     
+    	 if (memRead == 1)
+    	 {
+    		 readData = Simulator.getDataMemory()[aluResult];
+    	 }
+    	 
+    	 MemWBReg.setAluResult(aluResult);
+    	 MemWBReg.setMemoryData(readData);
+    	 MemWBReg.setMemToReg(memToReg);
+    	 MemWBReg.setDestinationReg(destinationReg);
+    	 MemWBReg.setRegWrite(regWrite);
+     }     
 }

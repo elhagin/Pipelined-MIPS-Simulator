@@ -20,12 +20,9 @@ public class InstructionExecute
 		int regWrite = IDEXReg.getRegWrite();
 		int memWrite = IDEXReg.getMemWrite();
 		int memRead = IDEXReg.getMemRead();
-		
-		EXMemReg.setMemToReg(memToReg);
-		EXMemReg.setBranch(branch);
-		EXMemReg.setRegWrite(regWrite);
-		EXMemReg.setMemWrite(memWrite);
-		EXMemReg.setMemRead(memRead);
+		int regDst = IDEXReg.getRegDst();
+		String rt = IDEXReg.getRt();
+		String rd = IDEXReg.getRd();
 		
 		if (ALUsrc == 0)
 		{
@@ -37,12 +34,23 @@ public class InstructionExecute
 		else
 			input2 = Integer.parseInt(last16, 2);
 		
-		EXMemReg.setRegData2(regData2);
-		EXMemReg.setNewPC(PC + Integer.parseInt(last16, 2));
 		ALU.setInput1(regData1);
 		ALU.setInput2(input2);
 		String aluControl = ALU.generateControl(last16.substring(26), aluOp);
 		ALU.executeOperation(aluControl);
-		
+
+		EXMemReg.setAluResult(ALU.getOutput());
+		EXMemReg.setZeroFlag(ALU.getZeroFlag());
+		EXMemReg.setMemToReg(memToReg);
+		EXMemReg.setBranch(branch);
+		EXMemReg.setRegWrite(regWrite);
+		EXMemReg.setMemWrite(memWrite);
+		EXMemReg.setMemRead(memRead);
+		EXMemReg.setRegData2(regData2);
+		EXMemReg.setNewPC(PC + Integer.parseInt(last16, 2));
+		if (regDst == 0)
+			EXMemReg.setDestinationReg(rt);
+		else
+			EXMemReg.setDestinationReg(rd);
 	}
 }

@@ -3,7 +3,6 @@ package mainUnits;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import pipelineRegisters.EXMemReg;
@@ -17,8 +16,8 @@ public class Simulator {
 	private static int PC;
 	private static InstructionFetch fetchUnit ;
 	private static InstructionDecode decodeUnit ;
-	private static ArrayList <String> dataMemory;
-	private static ArrayList<String> instructionMemory;
+	private static String[] dataMemory;
+	private static String[] instructionMemory;
 	private static CU controlUnit;
 	private static Reader r;
 	private static HashMap<String, Integer> labels;
@@ -27,6 +26,8 @@ public class Simulator {
 	private static IFIDReg iFID;
 	private static EXMemReg eXMem;
 	private static MemWBReg memWB;
+	private static int i = 0;
+	private static int memoryPointer = 0;
 	
 	public static int getPC() {
 		return PC;
@@ -48,8 +49,8 @@ public class Simulator {
 		PC = 0;
 		fetchUnit = new InstructionFetch();
 		decodeUnit = new InstructionDecode();
-		dataMemory = new ArrayList <String>();
-		instructionMemory = new ArrayList <String>();
+		dataMemory = new String[4096];
+		instructionMemory = new String[4096];
 		labels = new HashMap<String, Integer>();
 		declarations = new HashMap<String, Integer>();
 		controlUnit = new CU();
@@ -70,9 +71,11 @@ public class Simulator {
 			String encoding = r.encodeCode(line);
 			if (!encoding.equals("nodata"))
 			{
-				instructionMemory.add(encoding);
+				instructionMemory[i] = encoding;
+				i++;
 			}
 		}
+		instructionMemory[i] = "DONE";
 		bufferedReader.close();		
 	}
 
@@ -90,22 +93,6 @@ public class Simulator {
 
 	public static void setDecodeUnit(InstructionDecode decodeUnit) {
 		Simulator.decodeUnit = decodeUnit;
-	}
-
-	public static ArrayList<String> getDataMemory() {
-		return dataMemory;
-	}
-
-	public static void setDataMemory(ArrayList<String> dataMemory) {
-		Simulator.dataMemory = dataMemory;
-	}
-
-	public static ArrayList<String> getInstructionMemory() {
-		return instructionMemory;
-	}
-
-	public static void setInstructionMemory(ArrayList<String> instructionMemory) {
-		Simulator.instructionMemory = instructionMemory;
 	}
 
 	public static CU getControlUnit() {
@@ -162,5 +149,37 @@ public class Simulator {
 
 	public static void setMemWB(MemWBReg memWB) {
 		Simulator.memWB = memWB;
+	}
+
+	public static String[] getDataMemory() {
+		return dataMemory;
+	}
+
+	public static void setDataMemory(String[] dataMemory) {
+		Simulator.dataMemory = dataMemory;
+	}
+
+	public static String[] getInstructionMemory() {
+		return instructionMemory;
+	}
+
+	public static void setInstructionMemory(String[] instructionMemory) {
+		Simulator.instructionMemory = instructionMemory;
+	}
+
+	public static int getI() {
+		return i;
+	}
+
+	public static void setI(int i) {
+		Simulator.i = i;
+	}
+
+	public static int getMemoryPointer() {
+		return memoryPointer;
+	}
+
+	public static void setMemoryPointer(int memoryPointer) {
+		Simulator.memoryPointer = memoryPointer;
 	}
 }

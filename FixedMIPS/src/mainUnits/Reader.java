@@ -77,9 +77,9 @@ public class Reader {
 				while (numberInBinary.length() < 32)
 					numberInBinary = signBit + numberInBinary;
 				String directiveLabel = split[0];
-				Simulator.getDataMemory().add(numberInBinary);
-				int memoryAddress = Simulator.getDataMemory().lastIndexOf(numberInBinary);
-				Simulator.getDeclarations().put(directiveLabel, memoryAddress);
+				Simulator.getDataMemory()[Simulator.getMemoryPointer()] = numberInBinary;
+				Simulator.getDeclarations().put(directiveLabel, Simulator.getMemoryPointer());
+				Simulator.setMemoryPointer(Simulator.getMemoryPointer() + 1);
 				for (int i = 1; i < words.length; i++)
 				{
 					number = Integer.parseInt(words[i]);
@@ -90,14 +90,16 @@ public class Reader {
 						signBit = '0';
 					while (numberInBinary.length() < 32)
 						numberInBinary = signBit + numberInBinary;
-					Simulator.getDataMemory().add(numberInBinary);
+					Simulator.getDataMemory()[Simulator.getMemoryPointer()] = numberInBinary;
+					Simulator.setMemoryPointer(Simulator.getMemoryPointer() + 1);
 				}
 				break;
 			case ".space":
 				double space = (double) Integer.parseInt(directive[1].replaceAll("\\s+",  ""));
 				for (double numberOfWords = Math.ceil(space/32); numberOfWords > 0; numberOfWords--)
 				{
-					Simulator.getDataMemory().add("00000000000000000000000000000000");
+					Simulator.getDataMemory()[Simulator.getMemoryPointer()] = "00000000000000000000000000000000";
+					Simulator.setMemoryPointer(Simulator.getMemoryPointer() + 1);
 				}
 				break;
 			}
@@ -1393,7 +1395,7 @@ public class Reader {
 				case "$k1":outputBinary = outputBinary + "11011";break;
 			}
 			int address = Simulator.getLabels().get(split2[2]);
-			int thisInstruction = Simulator.getInstructionMemory().size();
+			int thisInstruction = Simulator.getI();
 			int offset = (address - thisInstruction) - 1;
 			String offsetInBinary = Integer.toBinaryString(offset);
 			if (offset >= 0)
@@ -1469,7 +1471,7 @@ public class Reader {
 				case "$k1":outputBinary = outputBinary + "11011";break;
 			}
 			int address = Simulator.getLabels().get(split2[2]);
-			int thisInstruction = Simulator.getInstructionMemory().size();
+			int thisInstruction = Simulator.getI();
 			int offset = (address - thisInstruction) - 1;
 			String offsetInBinary = Integer.toBinaryString(offset);
 			if (offset >= 0)

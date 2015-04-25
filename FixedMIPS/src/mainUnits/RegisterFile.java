@@ -94,6 +94,40 @@ public class RegisterFile {
 			default: return 0;
 		}
 	}
+	
+	public static void write(String register, int data)
+	{
+		switch(register)
+		{
+			case "01000": t0 = data; break;
+			case "01001": t1 = data; break;
+			case "01010": t2 = data; break;
+			case "01011": t3 = data; break;
+			case "01100": t4 = data; break;
+			case "01101": t5 = data; break;
+			case "01110": t6 = data; break;
+			case "01111": t7 = data; break;
+			case "00001": at = data; break;
+			case "00100": a0 = data; break;
+			case "00101": a1 = data; break;
+			case "00110": a2 = data; break;
+			case "00111": a3 = data; break;
+			case "00010": v0 = data; break;
+			case "00011": v1 = data; break;
+			case "11000": t8 = data; break;
+			case "11001": t9 = data; break;
+			case "10000": s0 = data; break;
+			case "10001": s1 = data; break;
+			case "10010": s2 = data; break;
+			case "10011": s3 = data; break;
+			case "10100": s4 = data; break;
+			case "10101": s5 = data; break;
+			case "10110": s6 = data; break;
+			case "10111": s7 = data; break;
+			case "11010": k0 = data; break;
+			case "11011": k1 = data; break;
+		}
+	}
 
 	public static int getT0() {
 		return t0;
