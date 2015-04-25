@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,7 @@ import mainUnits.Simulator;
 public class GUI extends JFrame implements MouseListener, ActionListener{
 	private boolean openfile1 = false;
 	private String filename;
+	JTextArea textarea = new JTextArea(50,80);
 	JPanel SimulatorPanel = new JPanel();
 	public GUI() {
 		init();
@@ -52,7 +54,6 @@ public class GUI extends JFrame implements MouseListener, ActionListener{
 		buttonPanel.setLayout(new FlowLayout());
 		window.setSize(1000, 700);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		JTextArea textarea = new JTextArea(50,80);
 		JButton openFile=new JButton("Open file");
 		openFile.setBackground(Color.red);
 		openFile.addActionListener(new ActionListener() {
@@ -65,8 +66,22 @@ public class GUI extends JFrame implements MouseListener, ActionListener{
 				}
 			}
 		});
+		JButton Run=new JButton("Run");
+		Run.setBackground(Color.BLUE);
+		Run.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Run();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+
 		Simulatorpanel( SimulatorPanel );
 		buttonPanel.add(openFile);
+		buttonPanel.add(Run);
 		textPanel.add(textarea);
 		openFile.setBounds(100, 100, 200, 200);
 		window.getContentPane().add(buttonPanel, BorderLayout.NORTH);
@@ -98,6 +113,21 @@ public class GUI extends JFrame implements MouseListener, ActionListener{
 		
 	} 
 		
+	public void Run() throws IOException{
+		File f = new File("test.txt");
+		FileWriter fw = new FileWriter(f);
+		fw.write(this.textarea.getText());
+		fw.close();
+		this.SimulatorPanel.removeAll();
+		new Simulator("test.txt");
+		System.out.println(RegisterFile.getT0());
+		System.out.println(RegisterFile.getT1());
+		System.out.println(RegisterFile.getT2());
+		//this.getContentPane().add(SimulatorPanel, BorderLayout.EAST);
+		Simulatorpanel( this.SimulatorPanel );
+		SimulatorPanel.validate();
+		SimulatorPanel.repaint();
+	}
 	public void Simulatorpanel(JPanel SimulatorPanel ){
 		//JLabel pc = new JLabel ("pc:");
 		//JLabel pcvalue = new JLabel (String.valueOf(getPC()));
