@@ -34,6 +34,7 @@ public class Simulator {
 	private static MemWBReg memWB;
 	private static int i = 0;
 	private static int memoryPointer = 0;
+	private String filename;
 	
 	public static int getPC() {
 		return PC;
@@ -51,7 +52,8 @@ public class Simulator {
 		Simulator.r = r;
 	}
 
-	public Simulator() throws IOException{
+	public Simulator(String filename) throws IOException{
+		this.filename = filename;
 		PC = 0;
 		iFID = new IFIDReg();
 		iDEX = new IDEXReg();
@@ -63,7 +65,7 @@ public class Simulator {
 		declarations = new HashMap<String, Integer>();
 		controlUnit = new CU();
 		r = new Reader();
-		addInstructionsCodeToMemory();
+		addInstructionsCodeToMemory(this.filename);
 		for (int i = 0; i < 3; i++)
 		{
 			fetchStage.action();
@@ -75,14 +77,14 @@ public class Simulator {
 	}
 	
 	public static void main(String[]args) throws IOException{
-		new Simulator();
+		new Simulator("program.txt");
 		System.out.println(RegisterFile.getT0());
 		System.out.println(RegisterFile.getT1());
 		System.out.println(RegisterFile.getT2());
 	}
 	
-	public static void addInstructionsCodeToMemory() throws IOException{
-		FileReader fileReader = new FileReader("program.txt");
+	public static void addInstructionsCodeToMemory(String filename) throws IOException{
+		FileReader fileReader = new FileReader(filename);
 		BufferedReader bufferedReader = new BufferedReader(fileReader);
 		String line;
 		while ((line = bufferedReader.readLine()) != null)
