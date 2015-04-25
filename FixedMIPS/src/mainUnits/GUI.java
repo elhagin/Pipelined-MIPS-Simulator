@@ -11,15 +11,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -27,14 +22,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
+
 
 import mainUnits.Simulator;
 
 @SuppressWarnings("serial")
 
 public class GUI extends JFrame implements MouseListener, ActionListener{
-	private boolean openfile1 = false;
 	private String filename;
 	JTextArea textarea = new JTextArea(50,80);
 	JPanel SimulatorPanel = new JPanel();
@@ -107,7 +101,6 @@ public class GUI extends JFrame implements MouseListener, ActionListener{
 			 SimulatorPanel.validate();
 			 SimulatorPanel.repaint();
 		}else{
-			this.openfile1 = false;
 			this.filename = "";
 		}
 		
@@ -240,16 +233,7 @@ public class GUI extends JFrame implements MouseListener, ActionListener{
 	public static void main (String[]args) throws IOException
 	{
 		try {
-		GUI w = new GUI();
-//		while(true){
-//			System.out.print(w.openfile1);
-//			if(w.openfile1){
-//				new Simulator(w.filename);
-//				System.out.println(RegisterFile.getT0());
-//				System.out.println(RegisterFile.getT1());
-//				System.out.println(RegisterFile.getT2());
-//			}
-//		}
+		new GUI();
 		} catch (Exception e) {
 		e.printStackTrace();
 		}
