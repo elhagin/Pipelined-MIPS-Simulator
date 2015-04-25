@@ -35,9 +35,7 @@ import mainUnits.Simulator;
 public class GUI extends JFrame implements MouseListener, ActionListener{
 	private boolean openfile1 = false;
 	private String filename;
-	private JFrame window;
-	private JButton run;
-	private JButton openFile;
+	JPanel SimulatorPanel = new JPanel();
 	public GUI() {
 		init();
 	}
@@ -48,7 +46,6 @@ public class GUI extends JFrame implements MouseListener, ActionListener{
 		window.setTitle(" MIPS Simulator");
 		JPanel buttonPanel = new JPanel();
 		JPanel textPanel = new JPanel();
-		JPanel SimulatorPanel = new JPanel();
 		SimulatorPanel.setBackground(Color.WHITE);
 		SimulatorPanel.setLayout(new GridLayout(0,2));
 		buttonPanel.setBackground(Color.WHITE);
@@ -85,7 +82,11 @@ public class GUI extends JFrame implements MouseListener, ActionListener{
 		int response = fc.showOpenDialog(GUI.this);
 		if(response == JFileChooser.APPROVE_OPTION){
 			 this.filename = fc.getSelectedFile().toString();
-			 this.openfile1 = true;
+			 new Simulator(this.filename);
+				System.out.println(RegisterFile.getT0());
+				System.out.println(RegisterFile.getT1());
+				System.out.println(RegisterFile.getT2());
+				Simulatorpanel( this.SimulatorPanel );
 		}else{
 			this.openfile1 = false;
 			this.filename = "";
@@ -206,16 +207,15 @@ public class GUI extends JFrame implements MouseListener, ActionListener{
 	{
 		try {
 		GUI w = new GUI();
-		while(true){
-			System.out.print(w.openfile1);
-			if(w.openfile1){
-				System.out.print("A&A");
-				new Simulator(w.filename);
-				System.out.println(RegisterFile.getT0());
-				System.out.println(RegisterFile.getT1());
-				System.out.println(RegisterFile.getT2());
-			}
-		}
+//		while(true){
+//			System.out.print(w.openfile1);
+//			if(w.openfile1){
+//				new Simulator(w.filename);
+//				System.out.println(RegisterFile.getT0());
+//				System.out.println(RegisterFile.getT1());
+//				System.out.println(RegisterFile.getT2());
+//			}
+//		}
 		} catch (Exception e) {
 		e.printStackTrace();
 		}
