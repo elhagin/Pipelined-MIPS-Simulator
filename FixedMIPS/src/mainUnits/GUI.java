@@ -82,14 +82,13 @@ public class GUI extends JFrame implements MouseListener, ActionListener{
 		int response = fc.showOpenDialog(GUI.this);
 		if(response == JFileChooser.APPROVE_OPTION){
 			 this.filename = fc.getSelectedFile().toString();
-			 this.remove(this.SimulatorPanel);
-			 this.validate();
-			this.repaint();
+			this.SimulatorPanel.removeAll();
 			 new Simulator(this.filename);
 			 System.out.println(RegisterFile.getT0());
 			 System.out.println(RegisterFile.getT1());
 			 System.out.println(RegisterFile.getT2());
 			 //this.getContentPane().add(SimulatorPanel, BorderLayout.EAST);
+			 Simulatorpanel( this.SimulatorPanel );
 			this.validate();
 			this.repaint();
 		}else{
