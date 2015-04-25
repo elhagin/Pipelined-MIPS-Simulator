@@ -1,0 +1,26 @@
+package stages;
+
+import pipelineRegisters.EXMemReg;
+import mainUnits.CU;
+import mainUnits.Simulator;
+
+public class DataMemory {
+
+     public void action()
+     {
+    	 int regWrite = EXMemReg.getRegWrite();
+    	 int zeroFlag = EXMemReg.getZeroFlag();
+    	 int branch = EXMemReg.getBranch();
+    	 int memWrite = EXMemReg.getMemWrite();
+    	 int memRead = EXMemReg.getMemRead();
+    	 int aluResult = EXMemReg.getAluResult();
+    	 int regData2 = EXMemReg.getRegData2();
+    	 String destinationReg = EXMemReg.getDestinationReg();
+    	 
+    	 if (memWrite == 1)
+    	 {
+    		 String data = Integer.toBinaryString(regData2);
+    		 Simulator.getDataMemory()[aluResult] = data;
+    	 }
+     }     
+}

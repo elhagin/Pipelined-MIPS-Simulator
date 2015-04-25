@@ -1,0 +1,17 @@
+package stages;
+
+import mainUnits.CU;
+import mainUnits.Simulator;
+
+public class DataMemory {
+
+     public void action()
+     {
+    	 if(CU.getMemWrite() == 1)
+    	    Simulator.getDataMemory().set(InputAddress,InputWriteData);
+    	 else{
+    		 if(CU.getMemRead() == 1)
+    		    this.OutputReadData = ReadDataFromMemory(InputAddress);
+    	 }
+     }     
+}

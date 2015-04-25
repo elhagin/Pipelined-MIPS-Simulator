@@ -30,12 +30,13 @@ public class CU {
 				setALUSrc(0); 
 				setBranch(0);
 				setMemRead(0);
-				setMemToReg(0);
+				setMemToReg(1);
 				setMemWrite(0);
 				setRegDst(1);
 				setRegWrite(1);
 				setALUOp0(0);
 				setJump(0);
+				break;
 			case "100000"://lb $
 				setALUOp1(0);
 				setALUSrc(0);
@@ -47,17 +48,19 @@ public class CU {
 				setRegWrite(0);
 				setALUOp0(0);
 				setJump(0);
+				break;
 			case "001000"://addi //DONE
 				setALUOp1(0);
 				setALUSrc(1);
 				setBranch(0);
 				setMemRead(0);
-				setMemToReg(0);
+				setMemToReg(1);
 				setMemWrite(0);
 				setRegDst(0);
 				setRegWrite(1);
 				setALUOp0(0);
 				setJump(0);
+				break;
 			case "100011"://lw //DONE
 				setALUOp1(0);
 				setALUSrc(1);
@@ -69,6 +72,7 @@ public class CU {
 				setRegWrite(1);
 				setALUOp0(0);
 				setJump(0);
+				break;
 			case "100100"://lbu $
 				setALUOp1(0);
 				setALUSrc(0);
@@ -80,6 +84,7 @@ public class CU {
 				setRegWrite(0);
 				setALUOp0(0);
 				setJump(0);
+				break;
 			case "101011"://sw //DONE
 				setALUOp1(0);
 				setALUSrc(1);
@@ -91,6 +96,7 @@ public class CU {
 				setRegWrite(0);
 				setALUOp0(0);
 				setJump(0);
+				break;
 			case "101000"://sb $
 				setALUOp1(0);
 				setALUSrc(0);
@@ -102,6 +108,7 @@ public class CU {
 				setRegWrite(0);
 				setALUOp0(0);
 				setJump(0);
+				break;
 			case "001111"://lui $
 				setALUOp1(0);
 				setALUSrc(0);
@@ -113,6 +120,7 @@ public class CU {
 				setRegWrite(0);
 				setALUOp0(0);
 				setJump(0);
+				break;
 			case "000010"://j //DONE
 				setALUOp1(0);
 				setALUSrc(2);
@@ -124,6 +132,7 @@ public class CU {
 				setRegWrite(0);
 				setALUOp0(0);
 				setJump(1);
+				break;
 			case "000100"://beq //DONE
 				setALUOp1(0);
 				setALUSrc(0);
@@ -135,6 +144,7 @@ public class CU {
 				setRegWrite(0);
 				setALUOp0(1);
 				setJump(0);
+				break;
 			case "000101"://bne //DONE but not sure
 				setALUOp1(0);
 				setALUSrc(0);
@@ -146,6 +156,7 @@ public class CU {
 				setRegWrite(0);
 				setALUOp0(1);
 				setJump(0);
+				break;
 			case "000011"://jal $
 				setALUOp1(0);
 				setALUSrc(0);
@@ -157,6 +168,7 @@ public class CU {
 				setRegWrite(0);
 				setALUOp0(0);
 				setJump(0);
+				break;
 		}
 	}
 

@@ -9,21 +9,27 @@ import pipelineRegisters.EXMemReg;
 import pipelineRegisters.IDEXReg;
 import pipelineRegisters.IFIDReg;
 import pipelineRegisters.MemWBReg;
+import stages.DataMemory;
 import stages.InstructionDecode;
+import stages.InstructionExecute;
 import stages.InstructionFetch;
+import stages.WriteBack;
 
 public class Simulator {
 	private static int PC;
-	private static InstructionFetch fetchUnit ;
-	private static InstructionDecode decodeUnit ;
+	private static InstructionFetch fetchStage = new InstructionFetch();
+	private static InstructionDecode decodeStage = new InstructionDecode();
+	private static InstructionExecute executeStage = new InstructionExecute();
+	private static DataMemory memoryStage = new DataMemory();
+	private static WriteBack wbStage = new WriteBack();
 	private static String[] dataMemory;
 	private static String[] instructionMemory;
 	private static CU controlUnit;
 	private static Reader r;
 	private static HashMap<String, Integer> labels;
 	private static HashMap<String, Integer> declarations;
-	private static IDEXReg iDEX;
 	private static IFIDReg iFID;
+	private static IDEXReg iDEX;
 	private static EXMemReg eXMem;
 	private static MemWBReg memWB;
 	private static int i = 0;
@@ -45,21 +51,34 @@ public class Simulator {
 		Simulator.r = r;
 	}
 
-	public Simulator(){
+	public Simulator() throws IOException{
 		PC = 0;
-		fetchUnit = new InstructionFetch();
-		decodeUnit = new InstructionDecode();
+		iFID = new IFIDReg();
+		iDEX = new IDEXReg();
+		eXMem = new EXMemReg();
+		memWB = new MemWBReg();
 		dataMemory = new String[4096];
 		instructionMemory = new String[4096];
 		labels = new HashMap<String, Integer>();
 		declarations = new HashMap<String, Integer>();
 		controlUnit = new CU();
 		r = new Reader();
+		addInstructionsCodeToMemory();
+		for (int i = 0; i < 3; i++)
+		{
+			fetchStage.action();
+			decodeStage.action();
+			executeStage.action();
+			memoryStage.action();
+			wbStage.action();
+		}
 	}
 	
 	public static void main(String[]args) throws IOException{
-		System.out.println(Integer.parseInt(Integer.toBinaryString(-1).substring(1), 2));
-		System.out.println(Integer.parseUnsignedInt(Integer.toBinaryString(-1), 2));
+		new Simulator();
+		System.out.println(RegisterFile.getT0());
+		System.out.println(RegisterFile.getT1());
+		System.out.println(RegisterFile.getT2());
 	}
 	
 	public static void addInstructionsCodeToMemory() throws IOException{
@@ -80,19 +99,19 @@ public class Simulator {
 	}
 
 	public static InstructionFetch getFetchUnit() {
-		return fetchUnit;
+		return fetchStage;
 	}
 
 	public static void setFetchUnit(InstructionFetch fetchUnit) {
-		Simulator.fetchUnit = fetchUnit;
+		Simulator.fetchStage = fetchUnit;
 	}
 
 	public static InstructionDecode getDecodeUnit() {
-		return decodeUnit;
+		return decodeStage;
 	}
 
 	public static void setDecodeUnit(InstructionDecode decodeUnit) {
-		Simulator.decodeUnit = decodeUnit;
+		Simulator.decodeStage = decodeUnit;
 	}
 
 	public static CU getControlUnit() {
@@ -181,5 +200,45 @@ public class Simulator {
 
 	public static void setMemoryPointer(int memoryPointer) {
 		Simulator.memoryPointer = memoryPointer;
+	}
+
+	public static InstructionFetch getFetchStage() {
+		return fetchStage;
+	}
+
+	public static void setFetchStage(InstructionFetch fetchStage) {
+		Simulator.fetchStage = fetchStage;
+	}
+
+	public static InstructionDecode getDecodeStage() {
+		return decodeStage;
+	}
+
+	public static void setDecodeStage(InstructionDecode decodeStage) {
+		Simulator.decodeStage = decodeStage;
+	}
+
+	public static InstructionExecute getExecuteStage() {
+		return executeStage;
+	}
+
+	public static void setExecuteStage(InstructionExecute executeStage) {
+		Simulator.executeStage = executeStage;
+	}
+
+	public static DataMemory getMemoryStage() {
+		return memoryStage;
+	}
+
+	public static void setMemoryStage(DataMemory memoryStage) {
+		Simulator.memoryStage = memoryStage;
+	}
+
+	public static WriteBack getWbStage() {
+		return wbStage;
+	}
+
+	public static void setWbStage(WriteBack wbStage) {
+		Simulator.wbStage = wbStage;
 	}
 }

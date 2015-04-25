@@ -1,0 +1,9 @@
+package stages;
+
+public class WriteBack
+{
+	public void action()
+	{
+		
+	}
+}

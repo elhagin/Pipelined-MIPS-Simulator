@@ -26,7 +26,7 @@ public class InstructionExecute
 		
 		if (ALUsrc == 0)
 		{
-			if (last16.substring(26).equals("000000"))
+			if (last16.substring(10).equals("000000"))
 				input2 = Integer.parseInt(last16.substring(21, 26), 2);
 			else
 				input2 = regData2;
@@ -36,7 +36,7 @@ public class InstructionExecute
 		
 		ALU.setInput1(regData1);
 		ALU.setInput2(input2);
-		String aluControl = ALU.generateControl(last16.substring(26), aluOp);
+		String aluControl = ALU.generateControl(last16.substring(10), aluOp);
 		ALU.executeOperation(aluControl);
 
 		EXMemReg.setAluResult(ALU.getOutput());

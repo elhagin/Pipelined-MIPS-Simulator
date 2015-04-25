@@ -1,0 +1,37 @@
+package pipelineRegisters;
+
+public class MemWBReg {
+	private static int regWrite;
+	private static int memToReg;
+	private static int regDestination;
+	private static int aluResult;
+
+	public MemWBReg() {
+		super();
+	}
+
+	public int getRegWrite() {
+		return regWrite;
+	}
+
+	public void setRegWrite(int regWrite) {
+		this.regWrite = regWrite;
+	}
+
+	public int getMemToReg() {
+		return memToReg;
+	}
+
+	public void setMemToReg(int memToReg) {
+		this.memToReg = memToReg;
+	}
+
+	public int getRegDestination() {
+		return regDestination;
+	}
+
+	public void setRegDestination(int regDestination) {
+		this.regDestination = regDestination;
+	}
+
+}

@@ -30,6 +30,7 @@ public class Reader {
 			switch(split[0])
 			{
 				case ".data":readingData = true; return "nodata"; 
+				case ".text":readingData = false; return "nodata";
 				case "add":checkAdd();break;
 				case "sub":checkSub();break;
 				case "and":checkAnd();break;

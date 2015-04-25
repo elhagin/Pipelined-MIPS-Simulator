@@ -23,3 +23,6 @@
 1429908865484	Move compilation unit
 1429909303615	Delete element
 1429909469315	Encapsulate field 'last16bits'
+1429960397541	Encapsulate field 'memoryData'
+1429963109389	Rename field 'fetchUnit'
+1429963112454	Rename field 'decodeUnit'

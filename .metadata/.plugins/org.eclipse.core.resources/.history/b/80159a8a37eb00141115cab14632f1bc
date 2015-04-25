@@ -1,0 +1,12 @@
+package stages;
+
+import mainUnits.CU;
+import mainUnits.Simulator;
+
+public class DataMemory {
+
+     public void action()
+     {
+    	 
+     }     
+}

@@ -5,7 +5,7 @@ import mainUnits.Simulator;
 
 public class InstructionFetch {	
 	
-	public static void action()
+	public void action()
 	{
 		String currentInstruction = Simulator.getInstructionMemory()[Simulator.getPC()];
 		if (currentInstruction.equals("DONE"))

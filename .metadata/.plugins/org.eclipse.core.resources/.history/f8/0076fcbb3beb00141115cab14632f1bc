@@ -1,0 +1,10 @@
+package pipelineRegisters;
+
+public class MemWBReg {
+	private static int regWrite;
+	private static int memToReg;
+	private static int regDestination;
+	private static int aluResult;
+
+	
+}
